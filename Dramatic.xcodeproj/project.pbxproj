@@ -13,6 +13,7 @@
 		C95B19F52D8C31AA0041768C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19F42D8C31AA0041768C /* RealmSwift */; };
 		C95B19F82D8C31C80041768C /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19F72D8C31C80041768C /* RxCocoa */; };
 		C95B19FA2D8C31C80041768C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19F92D8C31C80041768C /* RxSwift */; };
+		C95B19FD2D8C32690041768C /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19FC2D8C32690041768C /* ReactorKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 			files = (
 				C95B19FA2D8C31C80041768C /* RxSwift in Frameworks */,
 				C95B19F52D8C31AA0041768C /* RealmSwift in Frameworks */,
+				C95B19FD2D8C32690041768C /* ReactorKit in Frameworks */,
 				C95B19EC2D8C312A0041768C /* SnapKit in Frameworks */,
 				C95B19F82D8C31C80041768C /* RxCocoa in Frameworks */,
 				C95B19F22D8C318B0041768C /* SkeletonView in Frameworks */,
@@ -99,6 +101,7 @@
 				C95B19F42D8C31AA0041768C /* RealmSwift */,
 				C95B19F72D8C31C80041768C /* RxCocoa */,
 				C95B19F92D8C31C80041768C /* RxSwift */,
+				C95B19FC2D8C32690041768C /* ReactorKit */,
 			);
 			productName = Dramatic;
 			productReference = C95B19D22D8C12700041768C /* Dramatic.app */;
@@ -134,6 +137,7 @@
 				C95B19F02D8C318B0041768C /* XCRemoteSwiftPackageReference "SkeletonView" */,
 				C95B19F32D8C31AA0041768C /* XCRemoteSwiftPackageReference "realm-swift" */,
 				C95B19F62D8C31C80041768C /* XCRemoteSwiftPackageReference "RxSwift" */,
+				C95B19FB2D8C32690041768C /* XCRemoteSwiftPackageReference "ReactorKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C95B19D32D8C12700041768C /* Products */;
@@ -403,8 +407,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift.git";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = exactVersion;
+				version = 20.0.1;
 			};
 		};
 		C95B19F62D8C31C80041768C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
@@ -413,6 +417,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 6.9.0;
+			};
+		};
+		C95B19FB2D8C32690041768C /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -447,6 +459,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C95B19F62D8C31C80041768C /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		C95B19FC2D8C32690041768C /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19FB2D8C32690041768C /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
