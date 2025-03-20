@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C95B19EC2D8C312A0041768C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19EB2D8C312A0041768C /* SnapKit */; };
+		C95B19EF2D8C313B0041768C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19EE2D8C313B0041768C /* Alamofire */; };
+		C95B19F22D8C318B0041768C /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19F12D8C318B0041768C /* SkeletonView */; };
+		C95B19F52D8C31AA0041768C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19F42D8C31AA0041768C /* RealmSwift */; };
+		C95B19F82D8C31C80041768C /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19F72D8C31C80041768C /* RxCocoa */; };
+		C95B19FA2D8C31C80041768C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19F92D8C31C80041768C /* RxSwift */; };
+		C95B19FD2D8C32690041768C /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = C95B19FC2D8C32690041768C /* ReactorKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C95B19D22D8C12700041768C /* Dramatic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dramatic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +46,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95B19FA2D8C31C80041768C /* RxSwift in Frameworks */,
+				C95B19F52D8C31AA0041768C /* RealmSwift in Frameworks */,
+				C95B19FD2D8C32690041768C /* ReactorKit in Frameworks */,
+				C95B19EC2D8C312A0041768C /* SnapKit in Frameworks */,
+				C95B19F82D8C31C80041768C /* RxCocoa in Frameworks */,
+				C95B19F22D8C318B0041768C /* SkeletonView in Frameworks */,
+				C95B19EF2D8C313B0041768C /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +95,13 @@
 			);
 			name = Dramatic;
 			packageProductDependencies = (
+				C95B19EB2D8C312A0041768C /* SnapKit */,
+				C95B19EE2D8C313B0041768C /* Alamofire */,
+				C95B19F12D8C318B0041768C /* SkeletonView */,
+				C95B19F42D8C31AA0041768C /* RealmSwift */,
+				C95B19F72D8C31C80041768C /* RxCocoa */,
+				C95B19F92D8C31C80041768C /* RxSwift */,
+				C95B19FC2D8C32690041768C /* ReactorKit */,
 			);
 			productName = Dramatic;
 			productReference = C95B19D22D8C12700041768C /* Dramatic.app */;
@@ -107,6 +131,14 @@
 			);
 			mainGroup = C95B19C92D8C12700041768C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C95B19EA2D8C312A0041768C /* XCRemoteSwiftPackageReference "SnapKit" */,
+				C95B19ED2D8C313B0041768C /* XCRemoteSwiftPackageReference "Alamofire" */,
+				C95B19F02D8C318B0041768C /* XCRemoteSwiftPackageReference "SkeletonView" */,
+				C95B19F32D8C31AA0041768C /* XCRemoteSwiftPackageReference "realm-swift" */,
+				C95B19F62D8C31C80041768C /* XCRemoteSwiftPackageReference "RxSwift" */,
+				C95B19FB2D8C32690041768C /* XCRemoteSwiftPackageReference "ReactorKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C95B19D32D8C12700041768C /* Products */;
 			projectDirPath = "";
@@ -150,9 +182,10 @@
 				INFOPLIST_FILE = Dramatic/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -160,9 +193,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.4team.Dramatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -178,9 +215,10 @@
 				INFOPLIST_FILE = Dramatic/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -188,9 +226,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.4team.Dramatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -335,6 +377,95 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C95B19EA2D8C312A0041768C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		C95B19ED2D8C313B0041768C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		C95B19F02D8C318B0041768C /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.31.0;
+			};
+		};
+		C95B19F32D8C31AA0041768C /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 20.0.1;
+			};
+		};
+		C95B19F62D8C31C80041768C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+		C95B19FB2D8C32690041768C /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C95B19EB2D8C312A0041768C /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19EA2D8C312A0041768C /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		C95B19EE2D8C313B0041768C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19ED2D8C313B0041768C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		C95B19F12D8C318B0041768C /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19F02D8C318B0041768C /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
+		};
+		C95B19F42D8C31AA0041768C /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19F32D8C31AA0041768C /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		C95B19F72D8C31C80041768C /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19F62D8C31C80041768C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		C95B19F92D8C31C80041768C /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19F62D8C31C80041768C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		C95B19FC2D8C32690041768C /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95B19FB2D8C32690041768C /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C95B19CA2D8C12700041768C /* Project object */;
 }
