@@ -9,11 +9,15 @@ import UIKit
 
 class BaseView: UIView {
     
-    required override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         configureHierarchy()
         configureLayout()
         configureView()
+    }
+    
+    convenience init() {
+        self.init(frame: .zero)
     }
     
     @available(*, unavailable)
