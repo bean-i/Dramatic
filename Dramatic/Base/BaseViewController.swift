@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BaseViewController<T: BaseView>: UIViewController {
+class BaseViewController<T: UIView>: UIViewController {
     
     var mainView: T {
         guard let customView = view as? T else {
