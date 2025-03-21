@@ -85,3 +85,45 @@ extension DTColor {
         }
     }
 }
+
+import SwiftUI
+
+@available(iOS 17.0, *)
+#Preview {
+    List {
+        Section {
+            Text("background")
+            Color(uiColor: .dt(.semantic(.bg(.brand))))
+            Color(uiColor: .dt(.semantic(.bg(.primary))))
+            Color(uiColor: .dt(.semantic(.bg(.secondary))))
+            Color(uiColor: .dt(.semantic(.bg(.tertiary))))
+        }
+        
+        
+        Section {
+            Text("text")
+            Color(uiColor: .dt(.semantic(.text(.brand))))
+            Color(uiColor: .dt(.semantic(.text(.primary))))
+            Color(uiColor: .dt(.semantic(.text(.secondary))))
+            Color(uiColor: .dt(.semantic(.text(.tertiary))))
+        }
+        
+        
+        Section {
+            Text("border")
+            Color(uiColor: .dt(.semantic(.border(.brand))))
+            Color(uiColor: .dt(.semantic(.border(.primary))))
+            Color(uiColor: .dt(.semantic(.border(.secondary))))
+            Color(uiColor: .dt(.semantic(.border(.tertiary))))
+        }
+        
+        
+        Section {
+            Text("icon")
+            Color(uiColor: .dt(.semantic(.icon(.brand))))
+            Color(uiColor: .dt(.semantic(.icon(.primary))))
+            Color(uiColor: .dt(.semantic(.icon(.secondary))))
+            Color(uiColor: .dt(.semantic(.icon(.tertiary))))
+        }
+    }
+}
