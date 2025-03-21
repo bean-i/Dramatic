@@ -8,7 +8,7 @@
 import UIKit
 
 extension CGColor {
-    func dt(_ dtColor: DTColor, alpha: CGFloat = 1) -> CGColor {
+    static func dt(_ dtColor: DTColor, alpha: CGFloat = 1) -> CGColor {
         return dtColor.uiColor.withAlphaComponent(alpha).cgColor
     }
 }

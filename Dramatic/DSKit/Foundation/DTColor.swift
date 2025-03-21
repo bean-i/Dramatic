@@ -39,7 +39,7 @@ extension DTColor {
     }
     
     enum Semantic {
-        case background(Scale)
+        case bg(Scale)
         case text(Scale)
         case border(Scale)
         case icon(Scale)
@@ -53,7 +53,7 @@ extension DTColor {
         
         var uiColor: UIColor {
             switch self {
-            case .background(let scale):
+            case .bg(let scale):
                 switch scale {
                 case .brand: return Primitive.yellow.uiColor
                 case .primary: return Primitive.black.uiColor
