@@ -53,6 +53,12 @@ final class DTCellTitle: BaseView {
             make.bottom.horizontalEdges.equalToSuperview()
         }
     }
+    
+    func setTitle(_ title: String, content: String) {
+        titleLabel.text = title
+        contentLabel.text = content
+    }
+
 }
 
 @available(iOS 17.0, *)
