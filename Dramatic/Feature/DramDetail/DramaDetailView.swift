@@ -8,6 +8,8 @@
 import UIKit
 
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class DramaDetailView: BaseView {
     lazy var collectionView = UICollectionView(
@@ -15,6 +17,7 @@ final class DramaDetailView: BaseView {
         collectionViewLayout: collectionViewLayout()
     )
     private var dataSource: DataSource?
+    private var disposeBag = DisposeBag()
     
     override func configureView() {
         super.configureView()
@@ -41,6 +44,7 @@ final class DramaDetailView: BaseView {
             case .description: self?.configureDescriptionSection()
             case .network:
                 self?.configureNetworkSection(environment: environment)
+            case .season: self?.configureEpisodeSection()
             default: nil
             }
         }
@@ -116,6 +120,29 @@ final class DramaDetailView: BaseView {
         return section
     }
     
+    private func configureEpisodeSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(300)
+        )
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(300)
+        )
+        
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 16, leading: 0, bottom: 0, trailing: 0)
+        return section
+    }
+    
     private func configureDataSource() {
         let backdropSectionRegistration = UICollectionView.CellRegistration(
             handler: backdropSectionRegistrationHandler
@@ -127,6 +154,10 @@ final class DramaDetailView: BaseView {
         
         let networkSectionRegistration = UICollectionView.CellRegistration(
             handler: networkSectionRegistrationHandler
+        )
+        
+        let episodeSectionRegistration = UICollectionView.CellRegistration(
+            handler: episodeSectionRegistrationHandler
         )
         
         dataSource = DataSource(
@@ -150,6 +181,12 @@ final class DramaDetailView: BaseView {
                     using: networkSectionRegistration,
                     for: indexPath,
                     item: network
+                )
+            case let .season(seasons):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: episodeSectionRegistration,
+                    for: indexPath,
+                    item: seasons
                 )
             }
         }
@@ -182,6 +219,20 @@ final class DramaDetailView: BaseView {
         cell.backgroundConfiguration = backgroundConfiguration
     }
     
+    private func episodeSectionRegistrationHandler(
+        cell: DramaEpisodeSection,
+        indexPath: IndexPath,
+        id: [DramaDetail.Season]
+    ) {
+        disposeBag = DisposeBag()
+        
+        cell.collectionView.registration(
+            items: id,
+            cardType: .episode,
+            disposeBag: disposeBag
+        )
+    }
+    
     func configureSnapShot(item: DramaDetail) {
         var snapShot = SnapShot()
         snapShot.appendSections(Section.allCases)
@@ -197,6 +248,10 @@ final class DramaDetailView: BaseView {
             [.network(item.networks)],
             toSection: .network
         )
+        snapShot.appendItems(
+            [.season(item.seasons)],
+            toSection: .season
+        )
         dataSource?.apply(snapShot)
     }
 }
@@ -209,12 +264,14 @@ extension DramaDetailView {
         case backdrop
         case description
         case network
+        case season
     }
     
     enum SectionItem: Hashable {
         case backdrop(String)
         case description(DramaDetail)
         case network([DramaDetail.Network])
+        case season([DramaDetail.Season])
     }
 }
 
