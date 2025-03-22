@@ -18,8 +18,7 @@ final class DTSearchBar: BaseView {
         searchBar.searchTextField.attributedPlaceholder = .dt(
             placeHolder,
             font: .body,
-            attributes: [.foregroundColor: UIColor.dt(.semantic(.text(.primary)))],
-            at: placeHolder
+            attributes: [.foregroundColor: UIColor.dt(.semantic(.text(.primary)))]
         )
         
         super.init(frame: .zero)
