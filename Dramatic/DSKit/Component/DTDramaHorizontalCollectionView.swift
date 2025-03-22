@@ -8,77 +8,65 @@
 import UIKit
 import SnapKit
 
-struct Drama {
-    let title: String
-    let content: String
-    let imageURL: String
-}
-
-// MARK: - DTCardType
-enum DTCardType {
-    case drama
-    case episode
-    
-    var imageWidth: CGFloat {
-        switch self {
-        case .drama: return 140
-        case .episode: return 150
-        }
-    }
-    
-    var imageHeight: CGFloat {
-        switch self {
-        case .drama: return 100
-        case .episode: return 200
-        }
-    }
-    
-    var titleHeight: CGFloat {
-        return 50
-    }
-    
-    var offset: CGFloat {
-        switch self {
-        case .drama: return 5
-        case .episode: return 2
-        }
-    }
-    
-    var totalHeight: CGFloat {
-        return imageHeight + titleHeight + offset
-    }
-}
-
 // MARK: - DTDramaHorizontalCollectionView
 final class DTDramaHorizontalCollectionView: BaseView {
     
-    private let size: DTCardType
-    
+    // MARK: - DTCardType
+    enum DTCardType {
+        case drama
+        case episode
+        
+        var imageWidth: CGFloat {
+            switch self {
+            case .drama: return 140
+            case .episode: return 150
+            }
+        }
+        
+        var imageHeight: CGFloat {
+            switch self {
+            case .drama: return 100
+            case .episode: return 200
+            }
+        }
+        
+        var titleHeight: CGFloat {
+            return 50
+        }
+        
+        var offset: CGFloat {
+            switch self {
+            case .drama: return 5
+            case .episode: return 2
+            }
+        }
+        
+        var totalHeight: CGFloat {
+            return imageHeight + titleHeight + offset
+        }
+    }
+
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     init(size: DTCardType) {
-        self.size = size
         super.init(frame: .zero)
-    }
-    
-    override func configureHierarchy() {
-        addSubview(collectionView)
-    }
-    
-    override func configureLayout() {
+        collectionView.collectionViewLayout = configureCollectionViewLayout(width: size.imageWidth, height: size.totalHeight)
+        
         collectionView.snp.makeConstraints { make in
             make.top.horizontalEdges.equalToSuperview()
             make.height.equalTo(size.totalHeight)
         }
     }
     
+    override func configureHierarchy() {
+        addSubview(collectionView)
+    }
+
     override func configureView() {
         collectionView.register(
             DTDramaHorizontalCollectionViewCell.self,
             forCellWithReuseIdentifier: DTDramaHorizontalCollectionViewCell.identifier
         )
-        
-        collectionView.collectionViewLayout = configureCollectionViewLayout(width: size.imageWidth, height: size.totalHeight)
         
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
@@ -101,7 +89,7 @@ final class DTDramaHorizontalCollectionViewCell: BaseCollectionViewCell {
     
     static let identifier = "DTDramaHorizontalCollectionViewCell"
     
-    private var type: DTCardType = .drama
+    private var type: DTDramaHorizontalCollectionView.DTCardType = .drama
 
     private let imageContentView = UIView()
     private let imageView = UIImageView()
@@ -139,7 +127,7 @@ final class DTDramaHorizontalCollectionViewCell: BaseCollectionViewCell {
         imageView.contentMode = .scaleAspectFill
     }
 
-    func configure(drama: Drama, cardType: DTCardType) {
+    func configure(drama: DramaDisplayable, cardType: DTDramaHorizontalCollectionView.DTCardType) {
         type = cardType
         titleView.setTitle(drama.title, content: drama.content)
         imageView.setImage(with: drama.imageURL)
