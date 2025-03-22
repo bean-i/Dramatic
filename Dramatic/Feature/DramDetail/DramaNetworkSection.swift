@@ -10,69 +10,35 @@ import UIKit
 import SnapKit
 
 final class DramaNetworkSection: BaseCollectionViewListCell {
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
-    typealias SnapShot = NSDiffableDataSourceSnapshot<Int, String>
-    
-    lazy var collectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: listLayout()
-    )
-    
-    var dataSource: DataSource?
+    private let vstack = UIStackView()
     
     override func configureView() {
         contentView.backgroundColor = .clear
+        configureVStack()
     }
     
     override func configureHierarchy() {
-        contentView.addSubViews(collectionView)
+        contentView.addSubViews(vstack)
     }
     
     override func configureLayout() {
-        collectionView.snp.makeConstraints { make in
+        vstack.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
-    private func listLayout() -> UICollectionViewCompositionalLayout {
-        var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
-        listConfiguration.showsSeparators = false
-        listConfiguration.backgroundColor = .clear
-        
-        return UICollectionViewCompositionalLayout.list(using: listConfiguration)
-    }
-    
-    private func cellRegistrationHandler(
-        cell: DramaNetworkCell,
-        indexPath: IndexPath,
-        id: String
-    ) {
-        cell.registration(url: id)
-        
-        var backgroundConfiguration = UIBackgroundConfiguration.listPlainCell()
-        backgroundConfiguration.backgroundColor = .secondarySystemGroupedBackground
-        cell.backgroundConfiguration = backgroundConfiguration
-    }
-    
-    private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration(
-            handler: cellRegistrationHandler
-        )
-        
-        dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
-            return collectionView.dequeueConfiguredReusableCell(
-                using: cellRegistration,
-                for: indexPath,
-                item: itemIdentifier
-            )
-        }
+    private func configureVStack() {
+        vstack.axis = .vertical
+        vstack.spacing = 12
+        vstack.distribution = .fillEqually
     }
     
     func registration(items: [DramaDetail.Network]) {
-        var snapshot = SnapShot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(items.map { "https://image.tmdb.org/t/p/original\($0.logoPath)" })
-        
-        dataSource?.apply(snapshot)
+        for url in items {
+            let cell = DramaNetworkCell(
+                url: "https://image.tmdb.org/t/p/original\(url.logoPath)"
+            )
+            vstack.addArrangedSubview(cell)
+        }
     }
 }
