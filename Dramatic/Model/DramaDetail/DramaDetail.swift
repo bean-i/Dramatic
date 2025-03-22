@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DramaDetail: Decodable {
+struct DramaDetail: Decodable, Hashable {
     let id: Int
     let name: String
     let backdropPath: String
@@ -16,6 +16,7 @@ struct DramaDetail: Decodable {
     let numberOfSeasons: Int
     let overview: String
     let inProduction: Bool
+    let seasons: [Season]
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -26,19 +27,24 @@ struct DramaDetail: Decodable {
         case numberOfSeasons = "number_of_seasons"
         case overview
         case inProduction = "in_production"
+        case seasons
     }
 }
 
 extension DramaDetail {
-    struct Genre: Decodable {
+    struct Genre: Decodable, Hashable {
         let id: Int
         let name: String
     }
     
-    struct Network: Decodable {
+    struct Network: Decodable, Hashable {
         let id: Int
         let logoPath: String
         let name: String
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
         
         enum CodingKeys: String, CodingKey {
             case id
@@ -47,11 +53,15 @@ extension DramaDetail {
         }
     }
     
-    struct Season: Decodable {
+    struct Season: Decodable, Hashable {
         let episodeCount: Int
         let id: Int
         let name: String
         let posterPath: String
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
         
         enum CodingKeys: String, CodingKey {
             case episodeCount = "episode_count"
@@ -138,6 +148,12 @@ extension DramaDetail {
                     "logo_path": "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
                     "name": "Netflix",
                     "origin_country": ""
+                },
+                {
+                    "id": 212,
+                    "logo_path": "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+                    "name": "Netflix",
+                    "origin_country": ""
                 }
             ],
             "number_of_episodes": 16,
@@ -147,7 +163,7 @@ extension DramaDetail {
             ],
             "original_language": "ko",
             "original_name": "폭싹 속았수다",
-            "overview": "당차고 야무진 소녀와 우직하고 헌신적인 소년. 제주 바닷가 작은 마을에서 한 뼘씩 자라온 두 사람의 인생은 어디로 향할까. 넘어지고 좌절해도 다시 일어서며, 세월을 뛰어넘어 피어나는 사랑 이야기.",
+            "overview": "당차고 야무진 소녀와 우직하고 헌신적인 소년. 제주 바닷가 작은 마을에서 한 뼘씩 자라온 두 사람의 인생은 어디로 향할까. 넘어지고 좌절해도 다시 일어서며, 세월을 뛰어넘어 피어나는 사랑 이야기.ㄹㅇ너린어ㅣㅏ러ㅣㅏㄴ어리ㅏ너ㅣ러ㅣㅏㅇ너리ㅏㅓㄴ이ㅏ러ㅣㅏㅇ너리ㅏㄴ어ㅣㅏ러나ㅣㅓ라ㅣㅓㄴ이ㅏㅓ리ㅏㅇ너리ㅏㅓㅇ니ㅏ러ㅣㅏㅇ너리ㅏㅇ너ㅣㅏ러ㅣㅇ나ㅓ라ㅣㅇ너ㅣㅏ렁니ㅏㅓ리ㅏㅇ너리ㅏㄴ어ㅣㅏ렁니ㅏㅓ리아너리ㅏㄴ어ㅣㅏㄹㅇ너ㅣㅏ러ㅏㅣㅇ너ㅣㅏㄹㄴ어ㅏㅣ러이ㅏ너라ㅣㅇ너ㅣㅏ렁니ㅏㅓ리ㅏㅇ너리ㅏㅇ너ㅣㅏ렁니ㅏㅣㅇㄹㄴ",
             "popularity": 19.475,
             "poster_path": "/ihN3sIsoyMLUs7HCKP4BYqAeyrA.jpg",
             "production_companies": [
