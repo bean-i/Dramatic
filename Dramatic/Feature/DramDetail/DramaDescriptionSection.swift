@@ -15,6 +15,8 @@ final class DramaDescriptionSection: BaseCollectionViewCell {
     private let overviewLabel = UILabel()
     
     override func configureView() {
+        contentView.backgroundColor = .clear
+        
         configureTitleLabel()
         
         configureInfoLabel()
@@ -63,5 +65,14 @@ final class DramaDescriptionSection: BaseCollectionViewCell {
         overviewLabel.textColor = .dt(.semantic(.text(.secondary)))
         overviewLabel.numberOfLines = 0
         overviewLabel.textAlignment = .left
+    }
+    
+    func registration(item: DramaDetail) {
+        titleLabel.text = item.name
+        let seasonText = "사즌 \(item.numberOfSeasons)개"
+        let statusText = item.inProduction ? "방영 중" : "방영 종료"
+        let genresText = item.genres.map { $0.name }.joined(separator: " • ")
+        infoLabel.text = "\(seasonText) • \(statusText) • \(genresText)"
+        overviewLabel.text = item.overview
     }
 }
