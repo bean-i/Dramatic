@@ -53,21 +53,32 @@ extension DramaDetail {
         }
     }
     
-    struct Season: Decodable, Hashable {
+    struct Season: Decodable, Hashable, DramaDisplayable {
+        let content: String
         let episodeCount: Int
         let id: Int
-        let name: String
-        let posterPath: String
+        let title: String
+        let imageURL: String
         
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }
         
+        init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.episodeCount = try container.decode(Int.self, forKey: .episodeCount)
+            self.id = try container.decode(Int.self, forKey: .id)
+            let url = try container.decode(String.self, forKey: .imageURL)
+            self.imageURL = "https://image.tmdb.org/t/p/w500\(url)"
+            self.title = try container.decode(String.self, forKey: .title)
+            self.content = "\(self.episodeCount)개의 에피소드"
+        }
+        
         enum CodingKeys: String, CodingKey {
             case episodeCount = "episode_count"
             case id
-            case name
-            case posterPath = "poster_path"
+            case title = "name"
+            case imageURL = "poster_path"
         }
     }
 }
