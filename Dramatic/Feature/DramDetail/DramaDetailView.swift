@@ -275,7 +275,15 @@ extension DramaDetailView {
     }
 }
 
+extension Reactive where Base: DramaDetailView {
+    var configureSnapShot: Binder<DramaDetail> {
+        Binder(base) { base, dramaDetail in
+            base.configureSnapShot(item: dramaDetail)
+        }
+    }
+}
+
 @available(iOS 17.0, *)
 #Preview {
-    DramaDetailViewController()
+    DramaDetailViewController(viewModel: DramaDetailViewModel(id: 219246))
 }

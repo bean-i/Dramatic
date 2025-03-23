@@ -68,5 +68,5 @@ final class DramaNetworkCell: BaseView {
 
 @available(iOS 17.0, *)
 #Preview {
-    DramaDetailViewController()
+    DramaDetailViewController(viewModel: DramaDetailViewModel(id: 219246))
 }
