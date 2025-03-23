@@ -21,4 +21,11 @@ final class TVClient {
         let request = DramaDetailRequest()
         return provider.request(.details(id: id, model: request))
     }
+    
+    func fetchSeason(seriesId: Int, seasonNumber: Int) -> Single<Season> {
+        let request = SeasonRequest()
+        return provider.request(
+            .season(seriesId: seriesId, seasonNumber: seasonNumber, model: request)
+        )
+    }
 }

@@ -11,6 +11,7 @@ import Alamofire
 
 enum TVEndPoint: EndPoint {
     case details(id: Int, model: DramaDetailRequest)
+    case season(seriesId: Int, seasonNumber: Int, model: SeasonRequest)
     
     var baseURL: URL? {
         URL(string: Bundle.main.baseURL)
@@ -20,12 +21,15 @@ enum TVEndPoint: EndPoint {
         switch self {
         case let .details(id, _):
             "/tv/\(id)"
+        case let .season(seriesId, seasonNumber, _):
+            "/tv/\(seriesId)/season/\(seasonNumber)"
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        case .details:
+        case .details,
+             .season:
             return .get
         }
     }
@@ -40,13 +44,17 @@ enum TVEndPoint: EndPoint {
     
     var encoder: (any ParameterEncoder)? {
         switch self {
-        case .details: return .urlEncodedForm
+        case .details,
+             .season:
+            return .urlEncodedForm
         }
     }
     
     var parameters: (any Encodable)? {
         switch self {
         case let .details(_, model):
+            return model
+        case let .season(_, _, model):
             return model
         }
     }
