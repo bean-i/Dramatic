@@ -26,41 +26,31 @@ extension ExploreViewController: View {
     
     func bind(reactor: ExploreViewReactor) {
         
-        reactor.state
-            .map { $0.trendingDrama }
-            .distinctUntilChanged()
+        reactor.pulse(\.$trendingDrama)
             .bind(to: mainView.trendingCollectionView.rx.items(cellIdentifier: TrendingCollectionViewCell.identifier, cellType: TrendingCollectionViewCell.self)) { (row, element, cell) in
                 cell.imageView.setImage(with: element.imageURL)
             }
             .disposed(by: disposeBag)
         
-        reactor.state
-            .map { $0.popularDrama }
-            .distinctUntilChanged()
+        reactor.pulse(\.$popularDrama)
             .bind(to: mainView.popularCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
             .disposed(by: disposeBag)
         
-        reactor.state
-            .map { $0.ratedDrama }
-            .distinctUntilChanged()
+        reactor.pulse(\.$ratedDrama)
             .bind(to: mainView.ratedCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
             .disposed(by: disposeBag)
         
-        reactor.state
-            .map { $0.similarDrama }
-            .distinctUntilChanged()
+        reactor.pulse(\.$similarDrama)
             .bind(to: mainView.similarCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
             .disposed(by: disposeBag)
         
-        reactor.state
-            .map { $0.recommendDrama }
-            .distinctUntilChanged()
+        reactor.pulse(\.$recommendDrama)
             .bind(to: mainView.recommendCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
@@ -68,11 +58,11 @@ extension ExploreViewController: View {
         
         // 셀 선택
         Observable.merge(
-            mainView.trendingCollectionView.rx.modelSelected(DramaEntity.self).asObservable(),
-            mainView.popularCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable(),
-            mainView.ratedCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable(),
-            mainView.similarCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable(),
-            mainView.recommendCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable()
+            mainView.trendingCollectionView.rx.modelSelected(DramaDisplayable.self).asObservable(),
+            mainView.popularCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable(),
+            mainView.ratedCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable(),
+            mainView.similarCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable(),
+            mainView.recommendCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable()
         )
         .map { $0.id }
         .bind(with: self) { owner, id in

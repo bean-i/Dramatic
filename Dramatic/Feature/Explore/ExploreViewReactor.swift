@@ -21,22 +21,22 @@ final class ExploreViewReactor: Reactor {
     
     // 중간 과정?: API 통신 결과 반영
     enum Mutation {
-        case setTrendingDrama(dramas: [DramaEntity])
-        case setPopularDrama(dramas: [DramaEntity])
-        case setRatedDrama(dramas: [DramaEntity])
-        case setSimilarDrama(dramas: [DramaEntity])
-        case setRecommendDrama(dramas: [DramaEntity])
+        case setTrendingDrama(dramas: [DramaDisplayable])
+        case setPopularDrama(dramas: [DramaDisplayable])
+        case setRatedDrama(dramas: [DramaDisplayable])
+        case setSimilarDrama(dramas: [DramaDisplayable])
+        case setRecommendDrama(dramas: [DramaDisplayable])
         case setSimilarDramaTitle(title: String)
         case setSelectedDrama(id: Int)
     }
     
     // 상태: 표시할 데이터
     struct State {
-        var trendingDrama: [DramaEntity]
-        var popularDrama: [DramaEntity]
-        var ratedDrama: [DramaEntity]
-        var similarDrama: [DramaEntity]
-        var recommendDrama: [DramaEntity]
+        @Pulse var trendingDrama: [DramaDisplayable]
+        @Pulse var popularDrama: [DramaDisplayable]
+        @Pulse var ratedDrama: [DramaDisplayable]
+        @Pulse var similarDrama: [DramaDisplayable]
+        @Pulse var recommendDrama: [DramaDisplayable]
         var similarDramaTitle: String = ""
         var selectedDrama: Int?
     }
