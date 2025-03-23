@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
@@ -26,6 +27,8 @@ final class DramaDetailViewController: BaseViewController<DramaDetailView> {
         
         bindState()
         
+        bindAction()
+        
         viewModel.action.onNext(.viewDidLoad)
     }
 }
@@ -38,10 +41,22 @@ private extension DramaDetailViewController {
             .compactMap(\.self)
             .bind(to: mainView.rx.configureSnapShot)
             .disposed(by: disposeBag)
+        
+        viewModel.pulse(\.$showSeasonDetail)
+            .asDriver(onErrorJustReturn: nil)
+            .compactMap(\.self)
+            .drive(with: self) { this, season in
+                /// 임시
+                this.navigationController?.pushViewController(UIViewController(), animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     func bindAction() {
-        
+        mainView.episodeSectionModelSelected
+            .map { Action.episodeSectionModelSelected($0) }
+            .bind(to: viewModel.action)
+            .disposed(by: disposeBag)
     }
 }
 

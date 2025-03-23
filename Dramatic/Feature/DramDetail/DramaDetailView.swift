@@ -18,6 +18,7 @@ final class DramaDetailView: BaseView {
     )
     private var dataSource: DataSource?
     private var disposeBag = DisposeBag()
+    let episodeSectionModelSelected = PublishSubject<DramaDetail.Season>()
     
     override func configureView() {
         super.configureView()
@@ -231,6 +232,9 @@ final class DramaDetailView: BaseView {
             cardType: .episode,
             disposeBag: disposeBag
         )
+        cell.collectionView.collectionView.rx.modelSelected(DramaDetail.Season.self)
+            .bind(to: episodeSectionModelSelected)
+            .disposed(by: disposeBag)
     }
     
     func configureSnapShot(item: DramaDetail) {
