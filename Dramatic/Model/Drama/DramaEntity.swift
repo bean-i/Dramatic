@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+struct DramaEntity: DramaDisplayable {
+    let title: String
+    let content: String
+    let imageURL: String    
+}
+
+extension DramaEntity {
+    static var mockEntities: [DramaEntity] {
+        DramaDTO.mockDramaDTOs.map { $0.toEntity() }
+    }
+}
