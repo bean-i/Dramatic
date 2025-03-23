@@ -9,10 +9,11 @@ import UIKit
 
 extension UIImageView {
     
-    func setImage(with url: String) {
-        guard let url = URL(string: url) else { return }
+    func setImage(with url: String?) {
+        guard let url,
+              let imageUrl = URL(string: url) else { return }
         
-        ImageClient.shared.requestImage(with: url) { response in
+        ImageClient.shared.requestImage(with: imageUrl) { response in
             switch response {
             case .success(let data):
                 self.image = UIImage(data: data)
