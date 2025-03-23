@@ -42,7 +42,6 @@ final class ExploreViewReactor: Reactor {
     }
     
     let initialState: State
-    private let network: NetworkProvider<DramaEndpoint>
     
     init() {
         self.initialState = State(
@@ -52,8 +51,6 @@ final class ExploreViewReactor: Reactor {
             similarDrama: [],
             recommendDrama: []
         )
-        self.network = NetworkProvider()
-        
         self.action.onNext(.loadData)
         self.action.onNext(.loadSimilarData(id: 249042))
         self.action.onNext(.loadRecommendData(id: 127532))
@@ -63,53 +60,29 @@ final class ExploreViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .loadData:
-            let trendingRequest = network.request(.trending)
-                .map { (dramas: DramaResponseDTO) -> Mutation in
-                        .setTrendingDrama(dramas: dramas.results.map { $0.toEntity() })
-                }
-                .catch { error in
-                    return Single.just(Mutation.setTrendingDrama(dramas: []))
-                }
+            
+            let trendingRequest = DramaClient.shared.fetchDrama(router: .trending)
+                .map { Mutation.setTrendingDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             
-            let popularRequest = network.request(.popular)
-                .map { (dramas: DramaResponseDTO) -> Mutation in
-                        .setPopularDrama(dramas: dramas.results.map { $0.toEntity() })
-                }
-                .catch { error in
-                    return Single.just(Mutation.setPopularDrama(dramas: []))
-                }
+            let popularRequest = DramaClient.shared.fetchDrama(router: .popular)
+                .map { Mutation.setPopularDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             
-            let ratedRequest = network.request(.rated)
-                .map { (dramas: DramaResponseDTO) -> Mutation in
-                        .setRatedDrama(dramas: dramas.results.map { $0.toEntity() })
-                }
-                .catch { error in
-                    return Single.just(Mutation.setRatedDrama(dramas: []))
-                }
+            let ratedRequest = DramaClient.shared.fetchDrama(router: .rated)
+                .map { Mutation.setRatedDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
 
             return Observable.concat([trendingRequest, popularRequest, ratedRequest])
             
         case .loadSimilarData(let id): // id기반 통신 + 타이틀 보여주기
-            return network.request(.similar(id: id))
-                .map { (dramas: DramaResponseDTO) -> Mutation in
-                        .setSimilarDrama(dramas: dramas.results.map { $0.toEntity() })
-                }
-                .catch { error in
-                    return Single.just(Mutation.setSimilarDrama(dramas: []))
-                }
+            return DramaClient.shared.fetchDramaWithId(router: .similar(id: id))
+                .map { Mutation.setSimilarDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             
         case .loadRecommendData(let id): // id기반 통신
-            return network.request(.recommend(id: id))
-                .map { (dramas: DramaResponseDTO) -> Mutation in
-                        .setRecommendDrama(dramas: dramas.results.map { $0.toEntity() })
-                }
-                .catch { error in
-                    return Single.just(Mutation.setRecommendDrama(dramas: []))
-                }
+            return DramaClient.shared.fetchDramaWithId(router: .recommend(id: id))
+                .map { Mutation.setRecommendDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             
         case .selectDrama(id: let id):
