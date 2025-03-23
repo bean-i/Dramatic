@@ -59,6 +59,7 @@ extension DramaDetail {
         let id: Int
         let title: String
         let imageURL: String
+        let seasonNumber: Int
         
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
@@ -68,6 +69,7 @@ extension DramaDetail {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.episodeCount = try container.decode(Int.self, forKey: .episodeCount)
             self.id = try container.decode(Int.self, forKey: .id)
+            self.seasonNumber = try container.decode(Int.self, forKey: .seasonNumber)
             let url = try container.decode(String.self, forKey: .imageURL)
             self.imageURL = "https://image.tmdb.org/t/p/w500\(url)"
             self.title = try container.decode(String.self, forKey: .title)
@@ -79,6 +81,7 @@ extension DramaDetail {
             case id
             case title = "name"
             case imageURL = "poster_path"
+            case seasonNumber = "season_number"
         }
     }
 }
