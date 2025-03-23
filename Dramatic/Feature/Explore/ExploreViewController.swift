@@ -11,7 +11,7 @@ import RxCocoa
 import ReactorKit
 
 final class ExploreViewController: BaseViewController<ExploreView> {
-
+    
     var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -25,12 +25,10 @@ final class ExploreViewController: BaseViewController<ExploreView> {
 extension ExploreViewController: View {
     
     func bind(reactor: ExploreViewReactor) {
-        reactor.action.onNext(.loadData)
-        reactor.action.onNext(.loadSimilarData(id: 123))
-        reactor.action.onNext(.loadRecommendData(id: 123)) // 사용자가 저장한 데이터 중 랜덤 아이디 뽑아서
         
         reactor.state
             .map { $0.trendingDrama }
+            .distinctUntilChanged()
             .bind(to: mainView.trendingCollectionView.rx.items(cellIdentifier: TrendingCollectionViewCell.identifier, cellType: TrendingCollectionViewCell.self)) { (row, element, cell) in
                 cell.imageView.setImage(with: element.imageURL)
             }
@@ -38,6 +36,7 @@ extension ExploreViewController: View {
         
         reactor.state
             .map { $0.popularDrama }
+            .distinctUntilChanged()
             .bind(to: mainView.popularCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
@@ -45,6 +44,7 @@ extension ExploreViewController: View {
         
         reactor.state
             .map { $0.ratedDrama }
+            .distinctUntilChanged()
             .bind(to: mainView.ratedCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
@@ -52,6 +52,7 @@ extension ExploreViewController: View {
         
         reactor.state
             .map { $0.similarDrama }
+            .distinctUntilChanged()
             .bind(to: mainView.similarCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
@@ -59,10 +60,34 @@ extension ExploreViewController: View {
         
         reactor.state
             .map { $0.recommendDrama }
+            .distinctUntilChanged()
             .bind(to: mainView.recommendCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
                 cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
             }
             .disposed(by: disposeBag)
+        
+        // 셀 선택
+        Observable.merge(
+            mainView.trendingCollectionView.rx.modelSelected(DramaEntity.self).asObservable(),
+            mainView.popularCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable(),
+            mainView.ratedCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable(),
+            mainView.similarCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable(),
+            mainView.recommendCollectionView.collectionView.rx.modelSelected(DramaEntity.self).asObservable()
+        )
+        .map { $0.id }
+        .bind(with: self) { owner, id in
+            owner.reactor?.action.onNext(.selectDrama(id: id))
+        }
+        .disposed(by: disposeBag)
+        
+        // 셀 선택 시, 화면 전환 코드 추가 필요(id)
+        reactor.state
+            .map { $0.selectedDrama }
+            .bind(with: self) { owner, id in
+                print("화면전환 아이디: \(id)")
+            }
+            .disposed(by: disposeBag)
+        
     }
     
 }
