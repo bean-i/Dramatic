@@ -6,56 +6,74 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import ReactorKit
 
 final class ExploreViewController: BaseViewController<ExploreView> {
-    
-    // 더미 이미지 URL 배열 (예시)
-    private let dummyImageURLs: [String] = [
-        "https://picsum.photos/seed/1/400/300",
-        "https://picsum.photos/seed/2/400/300",
-        "https://picsum.photos/seed/3/400/300",
-        "https://picsum.photos/seed/4/400/300",
-        "https://picsum.photos/seed/5/400/300",
-        "https://picsum.photos/seed/1/400/300",
-        "https://picsum.photos/seed/2/400/300",
-        "https://picsum.photos/seed/3/400/300",
-        "https://picsum.photos/seed/4/400/300",
-        "https://picsum.photos/seed/5/400/300"
-    ]
+
+    var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mainView.exploreCollectionView.delegate = self
-        mainView.exploreCollectionView.dataSource = self
+        mainView.trendingCollectionView.delegate = self
+        self.reactor = ExploreViewReactor()
     }
+    
 }
 
-extension ExploreViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension ExploreViewController: View {
     
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        return dummyImageURLs.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ExploreCollectionViewCell.identifier,
-            for: indexPath) as? ExploreCollectionViewCell else {
-            return UICollectionViewCell()
-        }
+    func bind(reactor: ExploreViewReactor) {
+        reactor.action.onNext(.loadData)
+        reactor.action.onNext(.loadSimilarData(id: 123))
+        reactor.action.onNext(.loadRecommendData(id: 123)) // 사용자가 저장한 데이터 중 랜덤 아이디 뽑아서
         
-        let url = dummyImageURLs[indexPath.item]
-        cell.configureData(url: url)
-        return cell
+        reactor.state
+            .map { $0.trendingDrama }
+            .bind(to: mainView.trendingCollectionView.rx.items(cellIdentifier: TrendingCollectionViewCell.identifier, cellType: TrendingCollectionViewCell.self)) { (row, element, cell) in
+                cell.imageView.setImage(with: element.imageURL)
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.popularDrama }
+            .bind(to: mainView.popularCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
+                cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.ratedDrama }
+            .bind(to: mainView.ratedCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
+                cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.similarDrama }
+            .bind(to: mainView.similarCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
+                cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.recommendDrama }
+            .bind(to: mainView.recommendCollectionView.collectionView.rx.items(cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier, cellType: DTDramaHorizontalCollectionViewCell.self)) { (row, element, cell) in
+                cell.configure(drama: element, cardType: DTDramaHorizontalCollectionView.DTCardType.drama)
+            }
+            .disposed(by: disposeBag)
     }
+    
+}
+
+extension ExploreViewController: UICollectionViewDelegate {
     
     // 커스텀 스냅핑: 스크롤 종료 시 셀의 중앙이 화면 중앙에 오도록 조정
     func scrollViewWillEndDragging(_ scrollView: UIScrollView,
                                    withVelocity velocity: CGPoint,
                                    targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        guard let layout = mainView.exploreCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        guard let layout = mainView.trendingCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         
         // 셀 크기, 간격, 그리고 좌측 인셋 값
         let cellWidth = layout.itemSize.width
@@ -80,13 +98,12 @@ extension ExploreViewController: UICollectionViewDataSource, UICollectionViewDel
         }
         
         // 인덱스 범위 보정 (0 이상, 최대 아이템 수 - 1)
-        let numberOfItems = mainView.exploreCollectionView.numberOfItems(inSection: 0)
+        let numberOfItems = mainView.trendingCollectionView.numberOfItems(inSection: 0)
         index = min(max(index, 0), CGFloat(numberOfItems - 1))
         
         // 선택된 셀의 중앙이 화면 중앙에 오도록 targetContentOffset 계산
         let newOffsetX = index * totalCellWidth + inset + cellWidth / 2 - deviceWidth / 2
         targetContentOffset.pointee = CGPoint(x: newOffsetX, y: targetContentOffset.pointee.y)
     }
-
 
 }

@@ -1,5 +1,5 @@
 //
-//  ExploreCollectionViewCell.swift
+//  TrendingCollectionViewCell.swift
 //  Dramatic
 //
 //  Created by 이빈 on 3/22/25.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class ExploreCollectionViewCell: BaseCollectionViewCell {
+final class TrendingCollectionViewCell: BaseCollectionViewCell {
     
     static let identifier = "ExploreCollectionViewCell"
     
