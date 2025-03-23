@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol GenreDisplayable {
+    var name: String { get }
+}

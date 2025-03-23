@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+struct GenreEntity: GenreDisplayable {
+    let name: String
+}
