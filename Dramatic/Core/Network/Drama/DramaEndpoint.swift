@@ -49,21 +49,21 @@ enum DramaEndpoint: EndPoint {
     }
     
     var encoder: ParameterEncoder? {
-        nil
+        return .urlEncodedForm
     }
     
     var parameters: Encodable? {
         switch self {
         case .trending:
-            return RequestParameters(language: "ko")
+            return RequestParameters(language: "ko-KR")
         case .popular:
-            return RequestParameters(language: "ko")
+            return RequestParameters(language: "ko-KR")
         case .rated:
-            return RequestParameters(language: "ko")
+            return RequestParameters(language: "ko-KR")
         case .similar:
-            return RequestParameters(language: "ko")
+            return RequestParameters(language: "ko-KR")
         case .recommend:
-            return RequestParameters(language: "ko")
+            return RequestParameters(language: "ko-KR")
         }
     }
     
