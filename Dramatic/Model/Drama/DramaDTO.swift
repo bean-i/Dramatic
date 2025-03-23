@@ -26,6 +26,12 @@ struct DramaDTO: Decodable {
     }
 }
 
+extension DramaResponseDTO {
+    static var empty: DramaResponseDTO {
+        return DramaResponseDTO(page: 0, results: [])
+    }
+}
+
 extension DramaDTO {
     func toEntity() -> DramaEntity {
         let firstGenreName = genreIds.first
