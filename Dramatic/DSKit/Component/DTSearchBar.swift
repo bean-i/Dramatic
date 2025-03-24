@@ -36,7 +36,6 @@ final class DTSearchBar: BaseView {
     override func configureLayout() {
         stackView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(10)
-            make.centerY.equalToSuperview()
             make.height.equalTo(50)
         }
     }
