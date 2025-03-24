@@ -8,7 +8,8 @@
 import Foundation
 
 protocol DramaDisplayable {
+    var id: Int { get }
     var title: String { get }
     var content: String { get }
-    var imageURL: String { get }
+    var imageURL: String? { get }
 }

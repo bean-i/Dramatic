@@ -58,7 +58,7 @@ extension DramaDetail {
         let episodeCount: Int
         let id: Int
         let title: String
-        let imageURL: String
+        let imageURL: String?
         let seasonNumber: Int
         
         func hash(into hasher: inout Hasher) {
