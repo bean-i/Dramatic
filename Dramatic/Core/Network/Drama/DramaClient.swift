@@ -52,4 +52,13 @@ final class DramaClient {
             }
     }
     
+    func fetchSearchDrama(page: Int, keyword: String?) -> Single<PageDTO> {
+        guard let keyword else { return Single.just(PageDTO.empty) }
+        
+        return provider.request(.search(page: page, keyword: keyword))
+            .catch { error in
+                return Single.just(PageDTO.empty)
+            }
+    }
+    
 }
