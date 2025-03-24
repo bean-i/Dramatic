@@ -38,6 +38,7 @@ final class DTHeader: BaseView {
             make.leading.equalToSuperview().inset(10)
             make.trailing.equalToSuperview()
             make.height.equalTo(1)
+            make.bottom.equalToSuperview()
         }
         
         mainUnderLineView.snp.makeConstraints { make in

@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 // MARK: - DTDramaHorizontalCollectionView
 final class DTDramaHorizontalCollectionView: BaseView {
@@ -82,6 +84,16 @@ final class DTDramaHorizontalCollectionView: BaseView {
         return layout
     }
     
+    func registration(items: [DramaDisplayable], cardType: DTCardType, disposeBag: DisposeBag) {
+        Observable.just(items)
+            .bind(to: collectionView.rx.items(
+                cellIdentifier: DTDramaHorizontalCollectionViewCell.identifier,
+                cellType: DTDramaHorizontalCollectionViewCell.self
+            )) { indexPath, drama, cell in
+                cell.configure(drama: drama, cardType: cardType)
+            }
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - DTDramaHorizontalCollectionViewCell
