@@ -1,5 +1,5 @@
 //
-//  ExploreViewReactor.swift
+//  ExploreViewModel.swift
 //  Dramatic
 //
 //  Created by 이빈 on 3/23/25.
@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import ReactorKit
 
-final class ExploreViewReactor: Reactor {
+final class ExploreViewModel: Reactor {
     
     // 인풋
     enum Action {
@@ -42,6 +42,7 @@ final class ExploreViewReactor: Reactor {
     }
     
     let initialState: State
+    private let network: NetworkProvider<DramaEndpoint>
     
     init() {
         self.initialState = State(
@@ -51,6 +52,7 @@ final class ExploreViewReactor: Reactor {
             similarDrama: [],
             recommendDrama: []
         )
+        self.network = NetworkProvider()
         self.action.onNext(.loadData)
         self.action.onNext(.loadSimilarData(id: 249042))
         self.action.onNext(.loadRecommendData(id: 127532))
@@ -61,27 +63,27 @@ final class ExploreViewReactor: Reactor {
         switch action {
         case .loadData:
             
-            let trendingRequest = DramaClient.shared.fetchDrama(router: .trending)
+            let trendingRequest = DramaClient.shared.fetchTrendingDrama()
                 .map { Mutation.setTrendingDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             
-            let popularRequest = DramaClient.shared.fetchDrama(router: .popular)
+            let popularRequest = DramaClient.shared.fetchPopularDrama()
                 .map { Mutation.setPopularDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             
-            let ratedRequest = DramaClient.shared.fetchDrama(router: .rated)
+            let ratedRequest = DramaClient.shared.fetchRatedDrama()
                 .map { Mutation.setRatedDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
 
-            return Observable.concat([trendingRequest, popularRequest, ratedRequest])
+            return Observable.merge([trendingRequest, popularRequest, ratedRequest])
             
         case .loadSimilarData(let id): // id기반 통신 + 타이틀 보여주기
-            return DramaClient.shared.fetchDramaWithId(router: .similar(id: id))
+            return DramaClient.shared.fetchSimilarDrama(id: id)
                 .map { Mutation.setSimilarDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             
         case .loadRecommendData(let id): // id기반 통신
-            return DramaClient.shared.fetchDramaWithId(router: .recommend(id: id))
+            return DramaClient.shared.fetchRecommendDrama(id: id)
                 .map { Mutation.setRecommendDrama(dramas: $0.results.map { $0.toEntity() }) }
                 .asObservable()
             

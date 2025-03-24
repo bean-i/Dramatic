@@ -16,24 +16,40 @@ final class DramaClient {
     private let provider = NetworkProvider<DramaEndpoint>()
 
     private init() {}
-
     
-    func fetchDrama(router: DramaEndpoint) -> Single<DramaResponseDTO> {
-        return provider.request(router)
+    func fetchTrendingDrama() -> Single<PageDTO> {
+        return provider.request(.trending)
             .catch { error in
-                return Single.just(DramaResponseDTO.empty)
+                return Single.just(PageDTO.empty)
             }
     }
     
-    func fetchDramaWithId(router: DramaEndpoint) -> Single<DramaResponseDTO> {
-        switch router {
-        case .similar(let id):
-            return provider.request(.similar(id: id))
-        case .recommend(let id):
-            return provider.request(.recommend(id: id))
-        default:
-            return Single.just(DramaResponseDTO.empty)
-        }
+    func fetchPopularDrama() -> Single<PageDTO> {
+        return provider.request(.popular)
+            .catch { error in
+                return Single.just(PageDTO.empty)
+            }
+    }
+    
+    func fetchRatedDrama() -> Single<PageDTO> {
+        return provider.request(.rated)
+            .catch { error in
+                return Single.just(PageDTO.empty)
+            }
+    }
+    
+    func fetchSimilarDrama(id: Int) -> Single<PageDTO> {
+        return provider.request(.similar(id: id))
+            .catch { error in
+                return Single.just(PageDTO.empty)
+            }
+    }
+
+    func fetchRecommendDrama(id: Int) -> Single<PageDTO> {
+        return provider.request(.recommend(id: id))
+            .catch { error in
+                return Single.just(PageDTO.empty)
+            }
     }
     
 }

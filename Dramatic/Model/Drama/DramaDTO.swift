@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DramaResponseDTO: Decodable {
+struct PageDTO: Decodable {
     let page: Int
     let results: [DramaDTO]
 }
@@ -26,9 +26,9 @@ struct DramaDTO: Decodable {
     }
 }
 
-extension DramaResponseDTO {
-    static var empty: DramaResponseDTO {
-        return DramaResponseDTO(page: 0, results: [])
+extension PageDTO {
+    static var empty: PageDTO {
+        return PageDTO(page: 0, results: [])
     }
 }
 
@@ -41,7 +41,7 @@ extension DramaDTO {
             id: id,
             title: title,
             content: firstGenreName,
-            imageURL: APIKey.IMAGE_BASE_URL + (imageURL ?? "")
+            imageURL: Bundle.main.imageBaseURL("w500") + (imageURL ?? "")
         )
     }
 }

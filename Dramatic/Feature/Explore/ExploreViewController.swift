@@ -17,14 +17,14 @@ final class ExploreViewController: BaseViewController<ExploreView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         mainView.trendingCollectionView.delegate = self
-        self.reactor = ExploreViewReactor()
+        self.reactor = ExploreViewModel()
     }
     
 }
 
 extension ExploreViewController: View {
     
-    func bind(reactor: ExploreViewReactor) {
+    func bind(reactor: ExploreViewModel) {
         
         reactor.pulse(\.$trendingDrama)
             .bind(to: mainView.trendingCollectionView.rx.items(cellIdentifier: TrendingCollectionViewCell.identifier, cellType: TrendingCollectionViewCell.self)) { (row, element, cell) in
@@ -64,10 +64,8 @@ extension ExploreViewController: View {
             mainView.similarCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable(),
             mainView.recommendCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable()
         )
-        .map { $0.id }
-        .bind(with: self) { owner, id in
-            owner.reactor?.action.onNext(.selectDrama(id: id))
-        }
+        .map { Reactor.Action.selectDrama(id: $0.id) }
+        .bind(to: reactor.action)
         .disposed(by: disposeBag)
         
         // 셀 선택 시, 화면 전환 코드 추가 필요(id)

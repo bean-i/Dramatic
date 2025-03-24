@@ -17,7 +17,7 @@ enum DramaEndpoint: EndPoint {
     case recommend(id: Int)
     
     
-    var baseURL: URL? { return URL(string: APIKey.BASE_URL) }
+    var baseURL: URL? { return URL(string: Bundle.main.baseURL) }
     
     var path: String {
         switch self {
@@ -40,7 +40,7 @@ enum DramaEndpoint: EndPoint {
     
     var headers: HTTPHeaders {
         return [
-            "Authorization": "Bearer \(APIKey.ACCESS_TOKEN)"
+            "Authorization": "Bearer \(Bundle.main.accessToken)"
         ]
     }
     
