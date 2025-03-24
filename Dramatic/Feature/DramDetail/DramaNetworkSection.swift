@@ -36,7 +36,7 @@ final class DramaNetworkSection: BaseCollectionViewListCell {
     func registration(items: [DramaDetail.Network]) {
         for url in items {
             let cell = DramaNetworkCell(
-                url: "https://image.tmdb.org/t/p/original\(url.logoPath)"
+                url: "\(Bundle.main.imageBaseURL("w500"))\(url.logoPath)"
             )
             vstack.addArrangedSubview(cell)
         }

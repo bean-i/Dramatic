@@ -15,4 +15,8 @@ extension Bundle {
     var baseURL: String {
         return infoDictionary?["BASE_URL"] as? String ?? ""
     }
+    
+    func imageBaseURL(_ size: String) -> String {
+        return (infoDictionary?["IMAGE_BASE_URL"] as? String ?? "") + size
+    }
 }

@@ -71,7 +71,7 @@ extension DramaDetail {
             self.id = try container.decode(Int.self, forKey: .id)
             self.seasonNumber = try container.decode(Int.self, forKey: .seasonNumber)
             let url = try container.decode(String.self, forKey: .imageURL)
-            self.imageURL = "https://image.tmdb.org/t/p/w500\(url)"
+            self.imageURL = "\(Bundle.main.imageBaseURL("w500"))\(url)"
             self.title = try container.decode(String.self, forKey: .title)
             self.content = "\(self.episodeCount)개의 에피소드"
         }
