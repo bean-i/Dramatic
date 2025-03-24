@@ -69,7 +69,7 @@ final class DramaDescriptionSection: BaseCollectionViewCell {
     
     func registration(item: DramaDetail) {
         titleLabel.text = item.name
-        let seasonText = "사즌 \(item.numberOfSeasons)개"
+        let seasonText = "시즌 \(item.numberOfSeasons)개"
         let statusText = item.inProduction ? "방영 중" : "방영 종료"
         let genresText = item.genres.map { $0.name }.joined(separator: " • ")
         infoLabel.text = "\(seasonText) • \(statusText) • \(genresText)"
