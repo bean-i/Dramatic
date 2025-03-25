@@ -29,6 +29,7 @@ final class EpisodeListSectionViewModel: Reactor {
     
     private let watchingTableProvider = RealmProvider<WatchingTable>()
     private let watchedTableProvider = RealmProvider<WatchedTable>()
+    private let episodeTableProvider = RealmProvider<EpisodeTable>()
     
     init(season: SeasonResponse, drama: DramaEntity) {
         self.initialState = State(season: season, drama: drama)
@@ -41,10 +42,17 @@ final class EpisodeListSectionViewModel: Reactor {
             guard episode.stillPath != nil else { return .empty() }
             
             let object = watchingTableProvider.read(currentState.season.id)
+            
             if let object {
                 if let episodeIndex = object.episodes.firstIndex(where: { $0.id == episode.id }) {
-                    try? watchedTableProvider.write {
+                    try? watchingTableProvider.write {
                         object.episodes.remove(at: episodeIndex)
+                    }
+                    if object.episodes.isEmpty {
+                        if let episodeObject = episodeTableProvider.read(episode.id) {
+                            try? episodeTableProvider.delete(episodeObject)
+                        }
+                        try? watchingTableProvider.delete(object)
                     }
                 } else {
                     let newObject = EpisodeTable(id: episode.id)
@@ -66,11 +74,12 @@ final class EpisodeListSectionViewModel: Reactor {
                 return .empty()
             }
             let objects = watchingTableProvider.read(currentState.season.id)
+            guard let objects else { return .empty() }
             print(objects)
             let episodes = currentState.season.episodes
             let watchedObject = watchedTableProvider.read(currentState.season.id)
             
-            if episodes.count == (objects?.episodes.count ?? 0) && watchedObject == nil {
+            if episodes.count == objects.episodes.count && watchedObject == nil {
                 let newObject = WatchedTable(
                     id: currentState.season.id,
                     title: currentState.season.name,
