@@ -68,7 +68,7 @@ extension LibraryViewController: View {
         
         // 셀 선택
         Observable.merge(
-            mainView.watchedCollectionView.collectionView.rx.modelddSelected(DramaDisplayable.self).asObservable(),
+            mainView.watchedCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable(),
             mainView.toWatchCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable(),
             mainView.watchingCollectionView.collectionView.rx.modelSelected(DramaDisplayable.self).asObservable()
         )
