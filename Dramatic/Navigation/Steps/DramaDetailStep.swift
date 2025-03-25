@@ -10,5 +10,5 @@ import RxFlow
 
 enum DramaDetailStep: Step {
     case initialScreen(id: Int)
-    case seasonDetail(id: Int)
+    case seasonDetail(info: Season)
 }

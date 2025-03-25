@@ -46,8 +46,7 @@ final class DramaDetailViewController: BaseViewController<DramaDetailView>, View
             .asDriver(onErrorJustReturn: nil)
             .compactMap(\.self)
             .drive(with: self) { this, season in
-                /// 임시
-                this.navigationController?.pushViewController(UIViewController(), animated: true)
+                this.steps.accept(DramaDetailStep.seasonDetail(info: season))
             }
             .disposed(by: disposeBag)
     }

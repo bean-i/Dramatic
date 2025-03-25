@@ -26,8 +26,8 @@ final class DramaDetailFlow: Flow {
         switch step {
         case .initialScreen(let id):
             return navigateToDramaDetailScreen(id: id)
-        case .seasonDetail(let id):
-            return navigateToSeasonDetailScreen(id: id)
+        case .seasonDetail(let info):
+            return navigateToSeasonDetailScreen(info: info)
         }
     }
     
@@ -38,9 +38,9 @@ final class DramaDetailFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
     
-    private func navigateToSeasonDetailScreen(id: Int) -> FlowContributors {
+    private func navigateToSeasonDetailScreen(info: Season) -> FlowContributors {
         // 수정 필요
-        let viewController = DramaDetailViewController(viewModel: DramaDetailViewModel(id: id))
+        let viewController = DramaDetailViewController(viewModel: DramaDetailViewModel(id: 123))
         self.rootNavigationController.pushViewController(viewController, animated: true)
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
