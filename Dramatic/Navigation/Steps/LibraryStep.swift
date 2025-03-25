@@ -6,3 +6,9 @@
 //
 
 import Foundation
+import RxFlow
+
+enum LibraryStep: Step {
+    case initialScreen
+    case dramaDetail(id: Int)
+}

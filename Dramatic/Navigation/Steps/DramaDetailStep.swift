@@ -6,3 +6,9 @@
 //
 
 import Foundation
+import RxFlow
+
+enum DramaDetailStep: Step {
+    case initialScreen(id: Int)
+    case seasonDetail(id: Int)
+}
