@@ -15,6 +15,7 @@ enum DramaEndpoint: EndPoint {
     case rated
     case similar(id: Int)
     case recommend(id: Int)
+    case search(page: Int, keyword: String)
     
     
     var baseURL: URL? { return URL(string: Bundle.main.baseURL) }
@@ -31,6 +32,8 @@ enum DramaEndpoint: EndPoint {
             return "/tv/\(id)/similar"
         case .recommend(let id):
             return "/tv/\(id)/recommendations"
+        case .search:
+            return "/search/tv"
         }
     }
     
@@ -64,6 +67,12 @@ enum DramaEndpoint: EndPoint {
             return RequestParameters(language: "ko-KR")
         case .recommend:
             return RequestParameters(language: "ko-KR")
+        case .search(let page, let keyword):
+            return DramaSearchRequest(
+                language: "ko-KR",
+                query: keyword,
+                page: page
+            )
         }
     }
     
@@ -75,4 +84,10 @@ enum DramaEndpoint: EndPoint {
 }
 struct RequestParameters: Encodable {
     let language: String
+}
+
+struct DramaSearchRequest: Encodable {
+    let language: String
+    let query: String
+    let page: Int
 }
