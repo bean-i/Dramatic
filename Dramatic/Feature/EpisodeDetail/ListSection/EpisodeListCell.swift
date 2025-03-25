@@ -132,7 +132,7 @@ final class EpisodeListCell: BaseCollectionViewCell {
         watchedImageView.tintColor = .dt(.semantic(.icon(.secondary)))
     }
     
-    func registration(item: Season.Episode) {
+    func registration(item: SeasonResponse.Episode) {
         if let stillPath = item.stillPath {
             stillImageView.setImage(
                 with: "\(Bundle.main.imageBaseURL("w500"))\(stillPath)"
@@ -179,7 +179,7 @@ final class EpisodeListCell: BaseCollectionViewCell {
 #Preview {
     let cell = EpisodeListCell()
     cell.contentView.backgroundColor = .black
-    cell.registration(item: Season.mock.episodes[0])
+    cell.registration(item: SeasonResponse.mock.episodes[0])
     
     return cell
 }

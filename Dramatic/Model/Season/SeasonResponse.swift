@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Season: Decodable, Hashable {
+struct SeasonResponse: Decodable, Hashable {
     let id: Int
     let name: String
     let overview: String
@@ -23,7 +23,7 @@ struct Season: Decodable, Hashable {
     }
 }
 
-extension Season {
+extension SeasonResponse {
     struct Episode: Decodable, Hashable {
         let id: Int
         let episodeNumber: Int
@@ -43,9 +43,9 @@ extension Season {
     }
 }
 
-extension Season {
-    static var mock: Season {
-        Season(
+extension SeasonResponse {
+    static var mock: SeasonResponse {
+        SeasonResponse(
             id: 342423,
             name: "리미티드 시리즈",
             overview: "",

@@ -20,7 +20,7 @@ final class EpisodeListSectionViewModel: Reactor {
     }
     
     struct State {
-        var season: Season
+        var season: SeasonResponse
         var drama: DramaEntity
     }
     
@@ -29,7 +29,7 @@ final class EpisodeListSectionViewModel: Reactor {
     private let watchingTableProvider = RealmProvider<WatchingTable>()
     private let watchedTableProvider = RealmProvider<WatchedTable>()
     
-    init(season: Season, drama: DramaEntity) {
+    init(season: SeasonResponse, drama: DramaEntity) {
         self.initialState = State(season: season, drama: drama)
     }
     

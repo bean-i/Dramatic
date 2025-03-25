@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DramaDetail: Decodable, Hashable {
+struct DramaDetailResponse: Decodable, Hashable {
     let id: Int
     let name: String
     let backdropPath: String
@@ -31,7 +31,7 @@ struct DramaDetail: Decodable, Hashable {
     }
 }
 
-extension DramaDetail {
+extension DramaDetailResponse {
     struct Genre: Decodable, Hashable {
         let id: Int
         let name: String
@@ -86,8 +86,8 @@ extension DramaDetail {
     }
 }
 
-extension DramaDetail {
-    static var mock: DramaDetail? {
+extension DramaDetailResponse {
+    static var mock: DramaDetailResponse? {
         return MockupGenerator.generate("""
         {
             "adult": false,

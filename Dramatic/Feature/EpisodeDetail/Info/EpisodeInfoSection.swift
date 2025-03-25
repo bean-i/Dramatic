@@ -86,7 +86,7 @@ final class EpisodeInfoSection: BaseCollectionViewCell {
         imageView.clipsToBounds = true
     }
     
-    func registration(dramaName: String, item: Season) {
+    func registration(dramaName: String, item: SeasonResponse) {
         titleLabel.text = dramaName + " " + item.name
         episodeLabel.text = "\(item.episodes.count)개의 에피소드"
         overviewLabel.text = item.overview
@@ -98,7 +98,7 @@ final class EpisodeInfoSection: BaseCollectionViewCell {
 #Preview {
     let cell = EpisodeInfoSection()
     cell.contentView.backgroundColor = .black
-    cell.registration(dramaName: "폭싹 속았수다", item: Season.mock)
+    cell.registration(dramaName: "폭싹 속았수다", item: SeasonResponse.mock)
     
     return cell
 }

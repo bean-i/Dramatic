@@ -25,7 +25,7 @@ final class EpisodeArchiveSectionViewModel: Reactor {
     struct State {
         var archiveTypes = Set<EpisodeArchiveButton.ArchiveType>()
         var dramaEntity: DramaEntity
-        var season: Season
+        var season: SeasonResponse
     }
     
     var initialState: State
@@ -34,7 +34,7 @@ final class EpisodeArchiveSectionViewModel: Reactor {
     private let watchedTableProvider = RealmProvider<WatchedTable>()
     private let watchingTableProvider = RealmProvider<WatchingTable>()
     
-    init(dramaEntity: DramaEntity, season: Season) {
+    init(dramaEntity: DramaEntity, season: SeasonResponse) {
         self.initialState = .init(
             dramaEntity: dramaEntity,
             season: season

@@ -18,8 +18,8 @@ final class EpisodeListSection: BaseCollectionViewCell, View {
         frame: .zero,
         collectionViewLayout: collectionViewLayout()
     )
-    typealias DataSource = UICollectionViewDiffableDataSource<String, Season.Episode>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<String, Season.Episode>
+    typealias DataSource = UICollectionViewDiffableDataSource<String, SeasonResponse.Episode>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<String, SeasonResponse.Episode>
     
     private var dataSource: DataSource?
     var disposeBag = DisposeBag()
@@ -83,7 +83,7 @@ final class EpisodeListSection: BaseCollectionViewCell, View {
     private func registrationHandler(
         cell: EpisodeListCell,
         indexPath: IndexPath,
-        id: Season.Episode
+        id: SeasonResponse.Episode
     ) {
         cell.registration(item: id)
         

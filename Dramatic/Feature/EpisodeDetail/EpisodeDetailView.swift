@@ -160,7 +160,7 @@ final class EpisodeDetailView: BaseView {
     private func archiveSectionRegistrationHandler(
         cell: EpisodeArchiveSection,
         indexPath: IndexPath,
-        id: (DramaEntity, Season)
+        id: (DramaEntity, SeasonResponse)
     ) {
         cell.reactor = EpisodeArchiveSectionViewModel(
             dramaEntity: id.0,
@@ -172,7 +172,7 @@ final class EpisodeDetailView: BaseView {
     private func infoSectionRegistrationHandler(
         cell: EpisodeInfoSection,
         indexPath: IndexPath,
-        id: (String, Season)
+        id: (String, SeasonResponse)
     ) {
         cell.registration(dramaName: id.0, item: id.1)
     }
@@ -180,7 +180,7 @@ final class EpisodeDetailView: BaseView {
     private func listSectionRegistrationHandler(
         cell: EpisodeListSection,
         indexPath: IndexPath,
-        id: (Season, DramaEntity)
+        id: (SeasonResponse, DramaEntity)
     ) {
         let viewModel = EpisodeListSectionViewModel(
             season: id.0,
@@ -189,7 +189,7 @@ final class EpisodeDetailView: BaseView {
         cell.reactor = viewModel
     }
     
-    func configureSnapShot(drama: DramaEntity, item: Season) {
+    func configureSnapShot(drama: DramaEntity, item: SeasonResponse) {
         var snapShot = SnapShot()
         snapShot.appendSections(Section.allCases)
         snapShot.appendItems([.archive(drama, item)], toSection: .archive)
@@ -200,7 +200,7 @@ final class EpisodeDetailView: BaseView {
 }
 
 extension Reactive where Base: EpisodeDetailView {
-    var configureSnapShot: Binder<(DramaEntity, Season)> {
+    var configureSnapShot: Binder<(DramaEntity, SeasonResponse)> {
         Binder(base) { base, season in
             base.configureSnapShot(
                 drama: season.0,
@@ -221,9 +221,9 @@ extension EpisodeDetailView {
     }
     
     enum SectionItem: Hashable {
-        case info(String, Season)
-        case archive(DramaEntity, Season)
-        case list(Season, DramaEntity)
+        case info(String, SeasonResponse)
+        case archive(DramaEntity, SeasonResponse)
+        case list(SeasonResponse, DramaEntity)
     }
 }
 
