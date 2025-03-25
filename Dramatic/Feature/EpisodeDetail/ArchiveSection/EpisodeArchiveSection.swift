@@ -77,12 +77,6 @@ final class EpisodeArchiveSection: BaseCollectionViewCell, View {
     
     var disposeBag = DisposeBag()
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        disposeBag = DisposeBag()
-    }
-    
     override func configureView() {
         contentView.backgroundColor = .clear
         
@@ -135,7 +129,10 @@ final class EpisodeArchiveSection: BaseCollectionViewCell, View {
 @available(iOS 17.0, *)
 #Preview {
     let section = EpisodeArchiveSection()
-    section.reactor = EpisodeArchiveSectionViewModel()
+    section.reactor = EpisodeArchiveSectionViewModel(
+        dramaEntity: DramaEntity.mockEntities[0],
+        season: .mock
+    )
     
     return section
 }
