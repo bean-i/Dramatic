@@ -67,7 +67,7 @@ final class DramaDescriptionSection: BaseCollectionViewCell {
         overviewLabel.textAlignment = .left
     }
     
-    func registration(item: DramaDetail) {
+    func registration(item: DramaDetailResponse) {
         titleLabel.text = item.name
         let seasonText = "시즌 \(item.numberOfSeasons)개"
         let statusText = item.inProduction ? "방영 중" : "방영 종료"

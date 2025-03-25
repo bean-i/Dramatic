@@ -12,19 +12,19 @@ import ReactorKit
 final class DramaDetailViewModel: Reactor {
     enum Action {
         case viewDidLoad
-        case episodeSectionModelSelected(DramaDetail.Season)
+        case episodeSectionModelSelected(DramaDetailResponse.Season)
     }
     
     enum Mutation {
-        case mutatedDramaDetail(DramaDetail)
-        case mutatedSeason(Season?)
+        case mutatedDramaDetail(DramaDetailResponse)
+        case mutatedSeason(SeasonResponse?)
     }
     
     struct State {
         let id: Int
-        var dramaDetail: DramaDetail?
+        var dramaDetail: DramaDetailResponse?
         @Pulse
-        var showSeasonDetail: Season?
+        var showSeasonDetail: SeasonResponse?
     }
     
     var initialState: State

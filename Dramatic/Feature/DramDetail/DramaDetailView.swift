@@ -18,7 +18,7 @@ final class DramaDetailView: BaseView {
     )
     private var dataSource: DataSource?
     private var disposeBag = DisposeBag()
-    let episodeSectionModelSelected = PublishSubject<DramaDetail.Season>()
+    let episodeSectionModelSelected = PublishSubject<DramaDetailResponse.Season>()
     
     override func configureView() {
         super.configureView()
@@ -204,7 +204,7 @@ final class DramaDetailView: BaseView {
     private func descriptionSectionRegistrationHandler(
         cell: DramaDescriptionSection,
         indexPath: IndexPath,
-        id: DramaDetail
+        id: DramaDetailResponse
     ) {
         cell.registration(item: id)
     }
@@ -212,7 +212,7 @@ final class DramaDetailView: BaseView {
     private func networkSectionRegistrationHandler(
         cell: DramaNetworkSection,
         indexPath: IndexPath,
-        id: [DramaDetail.Network]
+        id: [DramaDetailResponse.Network]
     ) {
         cell.registration(items: id)
         
@@ -223,7 +223,7 @@ final class DramaDetailView: BaseView {
     private func episodeSectionRegistrationHandler(
         cell: DramaEpisodeSection,
         indexPath: IndexPath,
-        id: [DramaDetail.Season]
+        id: [DramaDetailResponse.Season]
     ) {
         disposeBag = DisposeBag()
         
@@ -232,12 +232,12 @@ final class DramaDetailView: BaseView {
             cardType: .episode,
             disposeBag: disposeBag
         )
-        cell.collectionView.collectionView.rx.modelSelected(DramaDetail.Season.self)
+        cell.collectionView.collectionView.rx.modelSelected(DramaDetailResponse.Season.self)
             .bind(to: episodeSectionModelSelected)
             .disposed(by: disposeBag)
     }
     
-    func configureSnapShot(item: DramaDetail) {
+    func configureSnapShot(item: DramaDetailResponse) {
         var snapShot = SnapShot()
         snapShot.appendSections(Section.allCases)
         snapShot.appendItems(
@@ -273,14 +273,14 @@ extension DramaDetailView {
     
     enum SectionItem: Hashable {
         case backdrop(String)
-        case description(DramaDetail)
-        case network([DramaDetail.Network])
-        case season([DramaDetail.Season])
+        case description(DramaDetailResponse)
+        case network([DramaDetailResponse.Network])
+        case season([DramaDetailResponse.Season])
     }
 }
 
 extension Reactive where Base: DramaDetailView {
-    var configureSnapShot: Binder<DramaDetail> {
+    var configureSnapShot: Binder<DramaDetailResponse> {
         Binder(base) { base, dramaDetail in
             base.configureSnapShot(item: dramaDetail)
         }
