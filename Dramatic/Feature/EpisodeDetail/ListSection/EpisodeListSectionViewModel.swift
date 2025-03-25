@@ -7,6 +7,7 @@
 
 import Foundation
 
+import RealmSwift
 import RxSwift
 import ReactorKit
 
@@ -38,27 +39,38 @@ final class EpisodeListSectionViewModel: Reactor {
         case let .collectionItemSelected(index):
             let episode = currentState.season.episodes[index]
             guard episode.stillPath != nil else { return .empty() }
-            let object = watchingTableProvider.read(episode.id)
+            
+            let object = watchingTableProvider.read(currentState.season.id)
             if let object {
-                try? watchingTableProvider.delete(object)
+                if let episodeIndex = object.episodes.firstIndex(where: { $0.id == episode.id }) {
+                    try? watchedTableProvider.write {
+                        object.episodes.remove(at: episodeIndex)
+                    }
+                } else {
+                    let newObject = EpisodeTable(id: episode.id)
+                    try? watchedTableProvider.write {
+                        object.episodes.append(newObject)
+                    }
+                }
             } else {
                 let newObject = WatchingTable(
-                    id: episode.id,
-                    seasonId: currentState.season.id,
+                    id: currentState.season.id,
                     title: currentState.season.name,
                     content: currentState.drama.content,
-                    imageURL: currentState.drama.imageURL
+                    imageURL: currentState.drama.imageURL,
+                    episodes: [EpisodeTable(id: episode.id)]
                 )
                 try? watchingTableProvider.create(newObject)
             }
             guard !currentState.season.episodes.isEmpty else {
                 return .empty()
             }
-            let objects = watchingTableProvider.readAll()
+            let objects = watchingTableProvider.read(currentState.season.id)
+            print(objects)
             let episodes = currentState.season.episodes
             let watchedObject = watchedTableProvider.read(currentState.season.id)
             
-            if episodes.count == objects.count && watchedObject == nil {
+            if episodes.count == (objects?.episodes.count ?? 0) && watchedObject == nil {
                 let newObject = WatchedTable(
                     id: currentState.season.id,
                     title: currentState.season.name,

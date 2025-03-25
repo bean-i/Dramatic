@@ -97,13 +97,13 @@ final class EpisodeArchiveSectionViewModel: Reactor {
             }
             return newState
         case .bindWatchingTableObservable:
-            let object = watchingTableProvider.readAll().first(where: {
-                $0.seasonId == newState.season.id
-            })
-            if object != nil {
-                newState.archiveTypes.insert(.보는중)
-            } else {
+            let object = watchingTableProvider.read(newState.season.id)
+            guard let object else { return newState }
+            if object.episodes.isEmpty {
+                try? watchingTableProvider.delete(object)
                 newState.archiveTypes.remove(.보는중)
+            } else {
+                newState.archiveTypes.insert(.보는중)
             }
             return newState
         }

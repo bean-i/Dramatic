@@ -132,7 +132,7 @@ final class EpisodeListCell: BaseCollectionViewCell {
         watchedImageView.tintColor = .dt(.semantic(.icon(.secondary)))
     }
     
-    func registration(item: SeasonResponse.Episode) {
+    func registration(seasonId: Int, item: SeasonResponse.Episode) {
         if let stillPath = item.stillPath {
             stillImageView.setImage(
                 with: "\(Bundle.main.imageBaseURL("w500"))\(stillPath)"
@@ -155,7 +155,8 @@ final class EpisodeListCell: BaseCollectionViewCell {
         
         overviewLabel.text = item.overview
         
-        let isContain = watchingTableProvider.read(item.id) != nil
+        let object = watchingTableProvider.read(seasonId)
+        let isContain = object?.episodes.contains(where: { $0.id == item.id }) ?? false
         watchedImageView.tintColor = isContain
         ? .dt(.semantic(.icon(.brand)))
         : .dt(.semantic(.icon(.secondary)))
@@ -163,7 +164,8 @@ final class EpisodeListCell: BaseCollectionViewCell {
         watchingTableProvider.observable()
             .withUnretained(self)
             .map { this, _ in
-                let isContain = this.watchingTableProvider.read(item.id) != nil
+                let object = this.watchingTableProvider.read(seasonId)
+                let isContain = object?.episodes.contains(where: { $0.id == item.id }) ?? false
                 return isContain
             }
             .bind(with: self) { this, isContain in
@@ -179,7 +181,7 @@ final class EpisodeListCell: BaseCollectionViewCell {
 #Preview {
     let cell = EpisodeListCell()
     cell.contentView.backgroundColor = .black
-    cell.registration(item: SeasonResponse.mock.episodes[0])
+    cell.registration(seasonId: 324324, item: SeasonResponse.mock.episodes[0])
     
     return cell
 }

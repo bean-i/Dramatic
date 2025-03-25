@@ -85,7 +85,8 @@ final class EpisodeListSection: BaseCollectionViewCell, View {
         indexPath: IndexPath,
         id: SeasonResponse.Episode
     ) {
-        cell.registration(item: id)
+        let seasonId = self.reactor?.currentState.season.id ?? 0
+        cell.registration(seasonId: seasonId, item: id)
         
         let backgroundConfiguration = UIBackgroundConfiguration.clear()
         cell.backgroundConfiguration = backgroundConfiguration

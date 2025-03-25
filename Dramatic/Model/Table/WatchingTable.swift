@@ -18,22 +18,22 @@ class WatchingTable: Object, DramaDTO {
     var content: String
     @Persisted
     var imageURL: String?
-    @Persisted(indexed: true)
-    var seasonId: Int
+    @Persisted
+    var episodes: List<EpisodeTable>
     
     convenience init(
         id: Int,
-        seasonId: Int,
         title: String,
         content: String,
-        imageURL: String?
+        imageURL: String?,
+        episodes: [EpisodeTable]
     ) {
         self.init()
         
         self.id = id
-        self.seasonId = seasonId
         self.title = title
         self.content = content
         self.imageURL = imageURL
+        self.episodes.append(objectsIn: episodes)
     }
 }
