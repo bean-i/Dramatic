@@ -9,8 +9,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 import ReactorKit
+import RxFlow
 
-final class ExploreViewController: BaseViewController<ExploreView> {
+final class ExploreViewController: BaseViewController<ExploreView>, Stepper {
+    
+    var steps = PublishRelay<Step>()
     
     var disposeBag = DisposeBag()
     
@@ -72,7 +75,8 @@ extension ExploreViewController: View {
         reactor.state
             .map { $0.selectedDrama }
             .bind(with: self) { owner, id in
-                print("화면전환 아이디: \(id)")
+                guard let id else { return }
+                owner.steps.accept(ExploreStep.dramaDetail(id: id))
             }
             .disposed(by: disposeBag)
         

@@ -11,8 +11,12 @@ import SnapKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import RxFlow
 
-final class DramaDetailViewController: BaseViewController<DramaDetailView>, View {
+final class DramaDetailViewController: BaseViewController<DramaDetailView>, View, Stepper {
+    
+    var steps = PublishRelay<Step>()
+    
     var disposeBag = DisposeBag()
     
     init(viewModel: DramaDetailViewModel) {
