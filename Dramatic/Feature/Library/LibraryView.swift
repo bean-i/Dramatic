@@ -27,9 +27,6 @@ final class LibraryView: BaseView {
     let watchingHeader = DTHeader(title: "보는중")
     lazy var watchingCollectionView = DTDramaHorizontalCollectionView(size: size)
     
-    let a = DTHeader(title: "보는중")
-    lazy var aCollectionView = DTDramaHorizontalCollectionView(size: size)
-    
     private let size = DTDramaHorizontalCollectionView.DTCardType.drama
     
     override func configureHierarchy() {
@@ -46,9 +43,7 @@ final class LibraryView: BaseView {
             watchedHeader,
             watchedCollectionView,
             watchingHeader,
-            watchingCollectionView,
-            a,
-            aCollectionView
+            watchingCollectionView
         )
         
         scrollView.addSubview(contentView)
