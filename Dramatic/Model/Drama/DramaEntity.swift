@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DramaEntity: DramaDisplayable, Equatable {
+struct DramaEntity: DramaDisplayable, Hashable {
     let id: Int
     let title: String
     let content: String
