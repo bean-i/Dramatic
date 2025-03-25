@@ -8,12 +8,14 @@
 import Foundation
 
 struct Season: Decodable, Hashable {
+    let id: Int
     let name: String
     let overview: String
     let posterPath: String?
     let episodes: [Episode]
     
     enum CodingKeys: String, CodingKey {
+        case id
         case name
         case overview
         case posterPath = "poster_path"
@@ -44,6 +46,7 @@ extension Season {
 extension Season {
     static var mock: Season {
         Season(
+            id: 342423,
             name: "리미티드 시리즈",
             overview: "",
             posterPath: "/752qpqTFHrGlZoA5v1viSXsnk3w.jpg",

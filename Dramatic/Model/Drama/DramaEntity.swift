@@ -16,6 +16,6 @@ struct DramaEntity: DramaDisplayable, Equatable {
 
 extension DramaEntity {
     static var mockEntities: [DramaEntity] {
-        DramaDTO.mockDramaDTOs.map { $0.toEntity() }
+        DramaResponse.mockDramaDTOs.map { $0.toEntity() }
     }
 }
