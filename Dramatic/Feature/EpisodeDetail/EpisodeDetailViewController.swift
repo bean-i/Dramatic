@@ -12,19 +12,17 @@ import RxSwift
 import RxCocoa
 
 final class EpisodeDetailViewController: BaseViewController<EpisodeDetailView>, View {
-    var reactor: EpisodeDetailViewModel?
     var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mainView.configureSnapShot(dramaName: "폭싹 속았수다", item: .mock)
     }
     
     func bind(reactor: EpisodeDetailViewModel) {
-        let dramaName = reactor.state.map(\.dramaName)
+        let drama = reactor.state.map(\.drama)
         let season = reactor.state.map(\.season)
         
-        Observable.zip(dramaName, season)
+        Observable.zip(drama, season)
             .bind(to: mainView.rx.configureSnapShot)
             .disposed(by: disposeBag)
     }

@@ -141,17 +141,17 @@ final class EpisodeDetailView: BaseView {
                     for: indexPath,
                     item: (dramaName, season)
                 )
-            case .archive:
+            case let .archive(drama, season):
                 return collectionView.dequeueConfiguredReusableCell(
                     using: archiveSectionRegistration,
                     for: indexPath,
-                    item: ()
+                    item: (drama, season)
                 )
-            case let .list(episodes):
+            case let .list(season, drama):
                 return collectionView.dequeueConfiguredReusableCell(
                     using: listSectionRegistration,
                     for: indexPath,
-                    item: episodes
+                    item: (season, drama)
                 )
             }
         }
@@ -160,9 +160,13 @@ final class EpisodeDetailView: BaseView {
     private func archiveSectionRegistrationHandler(
         cell: EpisodeArchiveSection,
         indexPath: IndexPath,
-        id: Void
+        id: (DramaEntity, Season)
     ) {
-        cell.reactor = EpisodeArchiveSectionViewModel()
+        cell.reactor = EpisodeArchiveSectionViewModel(
+            dramaEntity: id.0,
+            season: id.1
+        )
+        cell.reactor?.action.onNext(.registration)
     }
     
     private func infoSectionRegistrationHandler(
@@ -176,27 +180,30 @@ final class EpisodeDetailView: BaseView {
     private func listSectionRegistrationHandler(
         cell: EpisodeListSection,
         indexPath: IndexPath,
-        id: [Season.Episode]
+        id: (Season, DramaEntity)
     ) {
-        let viewModel = EpisodeListSectionViewModel(episodes: id)
+        let viewModel = EpisodeListSectionViewModel(
+            season: id.0,
+            drama: id.1
+        )
         cell.reactor = viewModel
     }
     
-    func configureSnapShot(dramaName: String, item: Season) {
+    func configureSnapShot(drama: DramaEntity, item: Season) {
         var snapShot = SnapShot()
         snapShot.appendSections(Section.allCases)
-        snapShot.appendItems([.archive], toSection: .archive)
-        snapShot.appendItems([.info(dramaName, item)], toSection: .info)
-        snapShot.appendItems([.list(item.episodes)], toSection: .list)
+        snapShot.appendItems([.archive(drama, item)], toSection: .archive)
+        snapShot.appendItems([.info(drama.title, item)], toSection: .info)
+        snapShot.appendItems([.list(item, drama)], toSection: .list)
         dataSource?.apply(snapShot)
     }
 }
 
 extension Reactive where Base: EpisodeDetailView {
-    var configureSnapShot: Binder<(String, Season)> {
+    var configureSnapShot: Binder<(DramaEntity, Season)> {
         Binder(base) { base, season in
             base.configureSnapShot(
-                dramaName: season.0,
+                drama: season.0,
                 item: season.1
             )
         }
@@ -215,15 +222,15 @@ extension EpisodeDetailView {
     
     enum SectionItem: Hashable {
         case info(String, Season)
-        case archive
-        case list([Season.Episode])
+        case archive(DramaEntity, Season)
+        case list(Season, DramaEntity)
     }
 }
 
 @available(iOS 17.0, *)
 #Preview {
     let view = EpisodeDetailView()
-    view.configureSnapShot(dramaName: "폭싹 속았수다", item: .mock)
+    view.configureSnapShot(drama: DramaEntity.mockEntities[0] , item: .mock)
     
     return view
 }

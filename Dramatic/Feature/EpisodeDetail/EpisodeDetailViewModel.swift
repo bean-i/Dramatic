@@ -19,16 +19,16 @@ final class EpisodeDetailViewModel: Reactor {
     }
     
     struct State {
-        let dramaName: String
+        let drama: DramaEntity
         let season: Season
         var archiveTypes = Set<EpisodeArchiveButton.ArchiveType>()
     }
     
     var initialState: State
     
-    init(dramaName: String, season: Season) {
-        self.initialState = .init(
-            dramaName: dramaName,
+    init(drama: DramaEntity, season: Season) {
+        self.initialState = State(
+            drama: drama,
             season: season
         )
     }
