@@ -161,7 +161,9 @@ final class EpisodeDetailView: BaseView {
         cell: EpisodeArchiveSection,
         indexPath: IndexPath,
         id: Void
-    ) { }
+    ) {
+        cell.reactor = EpisodeArchiveSectionViewModel()
+    }
     
     private func infoSectionRegistrationHandler(
         cell: EpisodeInfoSection,
@@ -176,7 +178,8 @@ final class EpisodeDetailView: BaseView {
         indexPath: IndexPath,
         id: [Season.Episode]
     ) {
-        cell.registration(items: id)
+        let viewModel = EpisodeListSectionViewModel(episodes: id)
+        cell.reactor = viewModel
     }
     
     func configureSnapShot(dramaName: String, item: Season) {
