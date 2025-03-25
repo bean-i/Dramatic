@@ -39,11 +39,27 @@ final class DramaDetailViewController: BaseViewController<DramaDetailView>, View
             .disposed(by: disposeBag)
         
         reactor.pulse(\.$showSeasonDetail)
-            .asDriver(onErrorJustReturn: nil)
+            .observe(on: MainScheduler.instance)
             .compactMap(\.self)
-            .drive(with: self) { this, season in
+            .bind(with: self) { this, season in
                 /// 임시
-                this.navigationController?.pushViewController(UIViewController(), animated: true)
+                let dramaDetail = reactor.currentState.dramaDetail
+                guard let dramaDetail else { return }
+                
+                let viewController = EpisodeDetailViewController()
+                viewController.reactor = EpisodeDetailViewModel(
+                    drama: DramaEntity(
+                        id: dramaDetail.id,
+                        title: dramaDetail.name,
+                        content: dramaDetail.genres.first?.name ?? "",
+                        imageURL: dramaDetail.backdropPath
+                    ),
+                    season: season
+                )
+                this.navigationController?.pushViewController(
+                    viewController,
+                    animated: true
+                )
             }
             .disposed(by: disposeBag)
     }
