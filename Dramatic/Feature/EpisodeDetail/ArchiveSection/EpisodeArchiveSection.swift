@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
@@ -26,7 +27,7 @@ final class EpisodeArchiveButton: UIButton {
         }
     }
     
-    private let type: ArchiveType
+    let type: ArchiveType
     
     init(type: ArchiveType) {
         self.type = type
@@ -53,6 +54,7 @@ final class EpisodeArchiveButton: UIButton {
         configuration.image = type.image
         configuration.imagePadding = 12
         configuration.imagePlacement = .top
+        configuration.baseBackgroundColor = .clear
         self.configuration = configuration
         tintColor = .dt(.semantic(.icon(.secondary)))
     }
@@ -69,12 +71,11 @@ final class EpisodeArchiveButton: UIButton {
     }
 }
 
-final class EpisodeArchiveSection: BaseCollectionViewCell {
+final class EpisodeArchiveSection: BaseCollectionViewCell, View {
     private var buttons = [EpisodeArchiveButton]()
     private let hstack = UIStackView()
     
-    let buttonTap = PublishSubject<EpisodeArchiveButton.ArchiveType>()
-    private var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -111,8 +112,21 @@ final class EpisodeArchiveSection: BaseCollectionViewCell {
             let button = EpisodeArchiveButton(type: type)
             buttons.append(button)
             hstack.addArrangedSubview(button)
-            button.tap
-                .bind(to: buttonTap)
+        }
+    }
+    
+    func bind(reactor: EpisodeArchiveSectionViewModel) {
+        for button in buttons {
+            if button.type == .보고싶어요 {
+                button.tap
+                    .map { _ in Reactor.Action.wishButtonTapped }
+                    .bind(to: reactor.action)
+                    .disposed(by: disposeBag)
+            }
+            
+            reactor.state.map(\.archiveTypes)
+                .map { $0.contains(button.type) }
+                .bind(to: button.rx.isSelected)
                 .disposed(by: disposeBag)
         }
     }
@@ -120,5 +134,8 @@ final class EpisodeArchiveSection: BaseCollectionViewCell {
 
 @available(iOS 17.0, *)
 #Preview {
-    EpisodeArchiveSection()
+    let section = EpisodeArchiveSection()
+    section.reactor = EpisodeArchiveSectionViewModel()
+    
+    return section
 }
