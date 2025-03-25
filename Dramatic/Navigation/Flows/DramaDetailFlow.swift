@@ -26,8 +26,8 @@ final class DramaDetailFlow: Flow {
         switch step {
         case .initialScreen(let id):
             return navigateToDramaDetailScreen(id: id)
-        case .seasonDetail(let info):
-            return navigateToSeasonDetailScreen(info: info)
+        case .seasonDetail(let detail, let info):
+            return navigateToSeasonDetailScreen(detail: detail, info: info)
         }
     }
     
@@ -38,10 +38,17 @@ final class DramaDetailFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
     
-    private func navigateToSeasonDetailScreen(info: Season) -> FlowContributors {
-        // 수정 필요
-        let viewController = DramaDetailViewController(viewModel: DramaDetailViewModel(id: 123))
+    private func navigateToSeasonDetailScreen(detail: DramaDetailResponse, info: SeasonResponse) -> FlowContributors {
+        let viewController = EpisodeDetailViewController()
+        let dramaEntity = DramaEntity(
+            id: detail.id,
+            title: detail.name,
+            content: detail.genres.first?.name ?? "",
+            imageURL: detail.backdropPath
+        )
+        viewController.reactor = EpisodeDetailViewModel(drama: dramaEntity, season: info)
         self.rootNavigationController.pushViewController(viewController, animated: true)
+        self.rootNavigationController.setNavigationBarHidden(false, animated: true)
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
     

@@ -36,12 +36,14 @@ final class LibraryFlow: Flow {
     private func navigateToLibraryScreen() -> FlowContributors {
         let viewController = LibraryViewController()
         self.rootNavigationController.pushViewController(viewController, animated: false)
+        self.rootNavigationController.setNavigationBarHidden(false, animated: true)
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
     
     private func navigateToDramaDetailScreen(id: Int) -> FlowContributors {
         let viewController = DramaDetailViewController(viewModel: DramaDetailViewModel(id: id))
         self.rootNavigationController.pushViewController(viewController, animated: true)
+        self.rootNavigationController.setNavigationBarHidden(false, animated: true)
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
     

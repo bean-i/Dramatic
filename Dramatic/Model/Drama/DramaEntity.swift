@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DramaEntity: DramaDisplayable, Equatable {
+struct DramaEntity: DramaDisplayable, Hashable {
     let id: Int
     let title: String
     let content: String
@@ -16,6 +16,6 @@ struct DramaEntity: DramaDisplayable, Equatable {
 
 extension DramaEntity {
     static var mockEntities: [DramaEntity] {
-        DramaDTO.mockDramaDTOs.map { $0.toEntity() }
+        DramaResponse.mockDramaDTOs.map { $0.toEntity() }
     }
 }

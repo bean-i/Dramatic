@@ -28,7 +28,6 @@ final class DramaBackdropSection: BaseCollectionViewCell {
     }
     
     func registration(url: String) {
-        print(#function, "\(Bundle.main.imageBaseURL("w500"))\(url)")
         backdropImageView.setImage(with: "\(Bundle.main.imageBaseURL("w500"))\(url)")
     }
 }

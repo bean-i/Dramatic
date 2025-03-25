@@ -17,6 +17,12 @@ final class LibraryViewController: BaseViewController<LibraryView>, Stepper {
     
     var disposeBag = DisposeBag()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reactor?.action.onNext(.loadArchiveData)
+        reactor?.action.onNext(.loadArchiveCountData)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.reactor = LibraryViewModel()
@@ -85,7 +91,7 @@ extension LibraryViewController: View {
             .map { $0.selectedDrama }
             .bind(with: self) { owner, id in
                 guard let id else { return }
-                owner.steps.accept(LibraryStep.dramaDetail(id: id))
+//                owner.steps.accept(LibraryStep.dramaDetail(id: id))
             }
             .disposed(by: disposeBag)
     }

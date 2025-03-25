@@ -33,7 +33,7 @@ final class DramaNetworkSection: BaseCollectionViewListCell {
         vstack.distribution = .fillEqually
     }
     
-    func registration(items: [DramaDetail.Network]) {
+    func registration(items: [DramaDetailResponse.Network]) {
         for url in items {
             let cell = DramaNetworkCell(
                 url: "\(Bundle.main.imageBaseURL("w500"))\(url.logoPath)"

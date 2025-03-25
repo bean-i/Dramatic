@@ -17,12 +17,12 @@ final class TVClient {
     
     private init() {}
     
-    func fetchDetails(id: Int) -> Single<DramaDetail> {
+    func fetchDetails(id: Int) -> Single<DramaDetailResponse> {
         let request = DramaDetailRequest()
         return provider.request(.details(id: id, model: request))
     }
     
-    func fetchSeason(seriesId: Int, seasonNumber: Int) -> Single<Season> {
+    func fetchSeason(seriesId: Int, seasonNumber: Int) -> Single<SeasonResponse> {
         let request = SeasonRequest()
         return provider.request(
             .season(seriesId: seriesId, seasonNumber: seasonNumber, model: request)
