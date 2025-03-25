@@ -8,10 +8,11 @@
 import UIKit
 
 import SnapKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class EpisodeListSection: BaseCollectionViewCell {
+final class EpisodeListSection: BaseCollectionViewCell, View {
     private let header = DTHeader(title: "에피소드")
     lazy var collectionView = UICollectionView(
         frame: .zero,
@@ -21,6 +22,7 @@ final class EpisodeListSection: BaseCollectionViewCell {
     typealias Snapshot = NSDiffableDataSourceSnapshot<String, Season.Episode>
     
     private var dataSource: DataSource?
+    var disposeBag = DisposeBag()
     
     override func configureView() {
         contentView.backgroundColor = .clear
@@ -89,19 +91,29 @@ final class EpisodeListSection: BaseCollectionViewCell {
         cell.backgroundConfiguration = backgroundConfiguration
     }
     
-    func registration(items: [Season.Episode]) {
-        var snapshot = Snapshot()
-        let section = "Episode"
-        snapshot.appendSections([section])
-        snapshot.appendItems(items, toSection: section)
-        dataSource?.apply(snapshot)
+    func bind(reactor: EpisodeListSectionViewModel) {
+        collectionView.rx.itemSelected
+            .map { Reactor.Action.collectionItemSelected($0.item) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    
+        reactor.state.map(\.episodes)
+            .bind(with: self) { this, episodes in
+                var snapshot = Snapshot()
+                let section = "Episode"
+                snapshot.appendSections([section])
+                snapshot.appendItems(episodes, toSection: section)
+                this.dataSource?.apply(snapshot)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
 @available(iOS 17.0, *)
 #Preview {
     let cell = EpisodeListSection()
-    cell.registration(items: Season.mock.episodes)
+    let viewModel = EpisodeListSectionViewModel(episodes: Season.mock.episodes)
+    cell.reactor = viewModel
     cell.contentView.backgroundColor = .black
     return cell
 }
