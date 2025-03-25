@@ -10,8 +10,12 @@ import UIKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import RxFlow
 
-final class EpisodeDetailViewController: BaseViewController<EpisodeDetailView>, View {
+final class EpisodeDetailViewController: BaseViewController<EpisodeDetailView>, View, Stepper {
+    
+    var steps = PublishRelay<Step>()
+    
     var disposeBag = DisposeBag()
     
     override func viewDidLoad() {

@@ -11,8 +11,12 @@ import SnapKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import RxFlow
 
-final class DramaDetailViewController: BaseViewController<DramaDetailView>, View {
+final class DramaDetailViewController: BaseViewController<DramaDetailView>, View, Stepper {
+    
+    var steps = PublishRelay<Step>()
+    
     var disposeBag = DisposeBag()
     
     init(viewModel: DramaDetailViewModel) {
@@ -42,7 +46,6 @@ final class DramaDetailViewController: BaseViewController<DramaDetailView>, View
             .observe(on: MainScheduler.instance)
             .compactMap(\.self)
             .bind(with: self) { this, season in
-                /// 임시
                 let dramaDetail = reactor.currentState.dramaDetail
                 guard let dramaDetail else { return }
                 

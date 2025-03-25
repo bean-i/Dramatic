@@ -7,11 +7,21 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import ReactorKit
+import RxFlow
 
-final class LibraryViewController: BaseViewController<LibraryView> {
+final class LibraryViewController: BaseViewController<LibraryView>, Stepper {
+    
+    var steps = PublishRelay<Step>()
     
     var disposeBag = DisposeBag()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reactor?.action.onNext(.loadArchiveData)
+        reactor?.action.onNext(.loadArchiveCountData)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +90,8 @@ extension LibraryViewController: View {
         reactor.state
             .map { $0.selectedDrama }
             .bind(with: self) { owner, id in
-                print("화면전환 아이디: \(id)")
+                guard let id else { return }
+//                owner.steps.accept(LibraryStep.dramaDetail(id: id))
             }
             .disposed(by: disposeBag)
     }

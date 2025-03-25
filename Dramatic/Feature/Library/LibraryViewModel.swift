@@ -38,6 +38,9 @@ final class LibraryViewModel: Reactor {
     }
     
     let initialState: State
+    let wishTable = RealmProvider<WishTable>()
+    let watchedTable = RealmProvider<WatchedTable>()
+    let watchingTable = RealmProvider<WatchingTable>()
     
     init() {
         self.initialState = State(
@@ -53,20 +56,23 @@ final class LibraryViewModel: Reactor {
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
+        let wishList = wishTable.readAll().map { $0.toEntity() }
+        let watchedList = watchedTable.readAll().map { $0.toEntity() }
+        let watchingList = watchingTable.readAll().map { $0.toEntity() }
+        
         switch action {
         case .loadArchiveData:
-            // 렘에서 데이터 가져오기
             return Observable.merge(
-                Observable.just(Mutation.setToWatchDrama(dramas: DramaEntity.mockEntities)),
-                Observable.just(Mutation.setWatchedDrama(dramas: DramaEntity.mockEntities)),
-                Observable.just(Mutation.setWatchingDrama(dramas: DramaEntity.mockEntities))
+                Observable.just(Mutation.setToWatchDrama(dramas: Array(wishList))),
+                Observable.just(Mutation.setWatchedDrama(dramas: Array(watchedList))),
+                Observable.just(Mutation.setWatchingDrama(dramas: Array(watchingList)))
             )
             
         case .loadArchiveCountData:
             return Observable.merge(
-                Observable.just(Mutation.setToWatchCount(count: 37)),
-                Observable.just(Mutation.setWatchedCount(count: 22)),
-                Observable.just(Mutation.setWatchingCount(count: 43))
+                Observable.just(Mutation.setToWatchCount(count: wishList.count)),
+                Observable.just(Mutation.setWatchedCount(count: watchedList.count)),
+                Observable.just(Mutation.setWatchingCount(count: watchingList.count))
             )
             
         case .selectDrama(let id):

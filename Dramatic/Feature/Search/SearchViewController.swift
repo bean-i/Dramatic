@@ -7,15 +7,15 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import ReactorKit
+import RxFlow
 
-final class SearchViewController: BaseViewController<SearchView> {
+final class SearchViewController: BaseViewController<SearchView>, Stepper {
     
-    var disposeBag = DisposeBag()
+    var steps = PublishRelay<Step>()
 
-    override func configureNavigation() {
-        navigationController?.setNavigationBarHidden(true, animated: false)
-    }
+    var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,8 @@ extension SearchViewController: View {
         reactor.state
             .map { $0.selectedDrama }
             .bind(with: self) { owner, id in
-                print("화면전환 아이디: \(id)")
+                guard let id else { return }
+                owner.steps.accept(SearchStep.dramaDetail(id: id))
             }
             .disposed(by: disposeBag)
     }
