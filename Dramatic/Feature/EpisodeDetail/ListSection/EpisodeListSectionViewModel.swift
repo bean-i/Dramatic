@@ -44,7 +44,10 @@ final class EpisodeListSectionViewModel: Reactor {
             } else {
                 let newObject = WatchingTable(
                     id: episode.id,
-                    seasonId: currentState.season.id
+                    seasonId: currentState.season.id,
+                    title: currentState.season.name,
+                    content: currentState.drama.content,
+                    imageURL: currentState.drama.imageURL
                 )
                 try? watchingTableProvider.create(newObject)
             }
