@@ -8,6 +8,9 @@
 import UIKit
 
 import SnapKit
+import RealmSwift
+import RxSwift
+import RxCocoa
 
 final class EpisodeListCell: BaseCollectionViewCell {
     private let stillImageView = UIImageView()
@@ -16,6 +19,17 @@ final class EpisodeListCell: BaseCollectionViewCell {
     private let airDateLabel = UILabel()
     private let overviewLabel = UILabel()
     private let watchedImageView = UIImageView()
+    
+    private let watchingTableProvider = RealmProvider<WatchingTable>()
+    private var disposeBag = DisposeBag()
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        stillImageView.image = nil
+        watchedImageView.isHidden = true
+        
+        disposeBag = DisposeBag()
+    }
     
     override func configureView() {
         contentView.backgroundColor = .clear
@@ -119,10 +133,15 @@ final class EpisodeListCell: BaseCollectionViewCell {
     }
     
     func registration(item: Season.Episode) {
-        stillImageView.setImage(
-            with: "\(Bundle.main.imageBaseURL("w500"))\(item.stillPath ?? "")"
-        )
+        if let stillPath = item.stillPath {
+            stillImageView.setImage(
+                with: "\(Bundle.main.imageBaseURL("w500"))\(stillPath)"
+            )
+            
+            watchedImageView.isHidden = false
+        }
         numberLabel.text = "\(item.episodeNumber)화"
+        
         if let runtime = item.runtime {
             let hour = runtime / 60
             let minute = runtime % 60
@@ -130,9 +149,29 @@ final class EpisodeListCell: BaseCollectionViewCell {
             ? "\(minute)분"
             : "\(hour)시간 \(minute)분"
         }
+        
         let date = item.airDate?.toDate(.airDate)
         airDateLabel.text = date?.toString(.episodeAirDate)
+        
         overviewLabel.text = item.overview
+        
+        let isContain = watchingTableProvider.read(item.id) != nil
+        watchedImageView.tintColor = isContain
+        ? .dt(.semantic(.icon(.brand)))
+        : .dt(.semantic(.icon(.secondary)))
+        
+        watchingTableProvider.observable()
+            .withUnretained(self)
+            .map { this, _ in
+                let isContain = this.watchingTableProvider.read(item.id) != nil
+                return isContain
+            }
+            .bind(with: self) { this, isContain in
+                this.watchedImageView.tintColor = isContain
+                ? .dt(.semantic(.icon(.brand)))
+                : .dt(.semantic(.icon(.secondary)))
+            }
+            .disposed(by: disposeBag)
     }
 }
 

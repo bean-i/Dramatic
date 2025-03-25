@@ -97,7 +97,7 @@ final class EpisodeListSection: BaseCollectionViewCell, View {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
     
-        reactor.state.map(\.episodes)
+        reactor.state.map(\.season.episodes)
             .bind(with: self) { this, episodes in
                 var snapshot = Snapshot()
                 let section = "Episode"
@@ -112,7 +112,7 @@ final class EpisodeListSection: BaseCollectionViewCell, View {
 @available(iOS 17.0, *)
 #Preview {
     let cell = EpisodeListSection()
-    let viewModel = EpisodeListSectionViewModel(episodes: Season.mock.episodes)
+    let viewModel = EpisodeListSectionViewModel(season: .mock, drama: DramaEntity.mockEntities[0])
     cell.reactor = viewModel
     cell.contentView.backgroundColor = .black
     return cell
